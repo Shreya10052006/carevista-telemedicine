@@ -1,0 +1,1111 @@
+/* Doctor Consultation Screen - Product Grade CSS */
+/* Premium two-column clinical interface */
+
+.page {
+    min-height: 100vh;
+    background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* Loading */
+.loadingScreen {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    color: #0d9488;
+}
+
+.spinner {
+    width: 48px;
+    height: 48px;
+    border: 4px solid #e2e8f0;
+    border-top-color: #0d9488;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Header */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 24px;
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(13, 148, 136, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.headerLeft {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.backBtn {
+    color: #0d9488;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 14px;
+    transition: opacity 0.2s;
+}
+
+.backBtn:hover {
+    opacity: 0.8;
+}
+
+.headerTitle {
+    font-size: 18px;
+    font-weight: 600;
+    color: #0f172a;
+}
+
+.headerRight {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.demoBadge {
+    padding: 6px 14px;
+    background: linear-gradient(135deg, #fef3c7, #fde68a);
+    border: 1px solid #fbbf24;
+    border-radius: 50px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #92400e;
+}
+
+.callStatusBadge {
+    padding: 6px 14px;
+    background: #f1f5f9;
+    border-radius: 50px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #64748b;
+}
+
+/* Compliance Notice */
+.complianceNotice {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 24px;
+    background: linear-gradient(135deg, #f0fdfa, #ccfbf1);
+    border-bottom: 1px solid #99f6e4;
+    font-size: 12px;
+    color: #0d9488;
+    font-weight: 500;
+}
+
+.complianceIcon {
+    font-size: 14px;
+}
+
+/* Main Layout */
+.main {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 24px;
+}
+
+.columns {
+    display: grid;
+    grid-template-columns: 420px 1fr;
+    gap: 24px;
+    align-items: start;
+}
+
+.leftColumn,
+.rightColumn {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Patient Card */
+.patientCard {
+    background: white;
+    padding: 24px;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+    border: 1px solid rgba(13, 148, 136, 0.1);
+}
+
+.patientHeader {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.patientAvatar {
+    width: 64px;
+    height: 64px;
+    background: linear-gradient(135deg, #6366f1, #8b5cf6);
+    color: white;
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+    font-weight: 600;
+}
+
+.patientInfo {
+    flex: 1;
+}
+
+.patientName {
+    font-size: 22px;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0 0 4px 0;
+}
+
+.patientMeta {
+    font-size: 14px;
+    color: #64748b;
+    margin: 0;
+}
+
+.patientBadges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+/* Consent Badges */
+.consentGranted {
+    padding: 6px 14px;
+    background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+    color: #059669;
+    border-radius: 50px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.consentRevoked {
+    padding: 6px 14px;
+    background: linear-gradient(135deg, #fef2f2, #fee2e2);
+    color: #dc2626;
+    border-radius: 50px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.consentPending {
+    padding: 6px 14px;
+    background: linear-gradient(135deg, #fffbeb, #fef3c7);
+    color: #d97706;
+    border-radius: 50px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+/* Priority Badges */
+.priorityHigh {
+    padding: 6px 14px;
+    background: linear-gradient(135deg, #fef2f2, #fee2e2);
+    color: #dc2626;
+    border-radius: 50px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.priorityMedium {
+    padding: 6px 14px;
+    background: linear-gradient(135deg, #fffbeb, #fef3c7);
+    color: #d97706;
+    border-radius: 50px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.priorityLow {
+    padding: 6px 14px;
+    background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+    color: #059669;
+    border-radius: 50px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+/* Warning Cards */
+.revokedWarning,
+.pendingWarning {
+    background: white;
+    padding: 24px;
+    border-radius: 16px;
+    text-align: center;
+    border: 2px dashed;
+}
+
+.revokedWarning {
+    border-color: #fca5a5;
+    background: linear-gradient(135deg, #fef2f2, #ffffff);
+}
+
+.pendingWarning {
+    border-color: #fcd34d;
+    background: linear-gradient(135deg, #fffbeb, #ffffff);
+}
+
+.warningIcon {
+    font-size: 40px;
+    margin-bottom: 12px;
+}
+
+.revokedWarning h3,
+.pendingWarning h3 {
+    font-size: 18px;
+    margin: 0 0 8px 0;
+}
+
+.revokedWarning h3 {
+    color: #dc2626;
+}
+
+.pendingWarning h3 {
+    color: #d97706;
+}
+
+.revokedWarning p,
+.pendingWarning p {
+    font-size: 14px;
+    color: #64748b;
+    margin: 0;
+}
+
+.warningNote {
+    font-size: 13px !important;
+    margin-top: 12px !important;
+    color: #94a3b8 !important;
+}
+
+/* Audit Note for Consent Changes */
+.auditNote {
+    padding: 8px 12px;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 6px;
+    font-size: 12px !important;
+    color: #b91c1c !important;
+    font-weight: 500;
+    margin: 12px 0 0 0 !important;
+}
+
+/* Case Context Indicator */
+.caseContext {
+    padding: 8px 12px;
+    background: #f0f9ff;
+    border: 1px solid #bae6fd;
+    border-radius: 6px;
+    font-size: 12px;
+    color: #0369a1;
+    font-weight: 500;
+    margin-bottom: 12px;
+}
+
+/* Read-only Past Data Styling */
+.readOnlyBanner {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 12px;
+    background: #f1f5f9;
+    border: 1px solid #e2e8f0;
+    border-radius: 6px;
+    font-size: 12px;
+    color: #64748b;
+    font-weight: 500;
+}
+
+.pastDataGreyed {
+    opacity: 0.7;
+    filter: grayscale(30%);
+}
+
+/* Intake Card */
+.intakeCard {
+    background: white;
+    padding: 24px;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+    border: 1px solid #e2e8f0;
+}
+
+.intakeHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.intakeHeader h2 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #0f172a;
+    margin: 0;
+}
+
+.intakeLabel {
+    padding: 4px 10px;
+    background: #f1f5f9;
+    border-radius: 50px;
+    font-size: 11px;
+    color: #64748b;
+    font-weight: 500;
+}
+
+.intakeContent {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.intakeRow {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 12px;
+    background: #f8fafc;
+    border-radius: 8px;
+}
+
+.intakeKey {
+    font-size: 13px;
+    color: #64748b;
+}
+
+.intakeValue {
+    font-size: 13px;
+    font-weight: 500;
+    color: #0f172a;
+}
+
+.intakeDisclaimer {
+    padding: 12px;
+    background: #f0f9ff;
+    border: 1px solid #bae6fd;
+    border-radius: 8px;
+    font-size: 12px;
+    color: #0369a1;
+}
+
+/* Logbook Card */
+.logbookCard {
+    background: white;
+    padding: 24px;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+    border: 1px solid #e2e8f0;
+}
+
+.logbookHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.logbookHeader h2 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #0f172a;
+    margin: 0;
+}
+
+.logbookCount {
+    font-size: 12px;
+    color: #64748b;
+}
+
+.emptyText {
+    font-size: 14px;
+    color: #94a3b8;
+    text-align: center;
+    padding: 24px 0;
+}
+
+.logbookTimeline {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.logbookEntry {
+    display: flex;
+    gap: 12px;
+    padding: 12px;
+    background: #f8fafc;
+    border-radius: 10px;
+}
+
+.entryTime {
+    width: 50px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #64748b;
+    text-align: center;
+    padding-top: 4px;
+}
+
+.entryContent {
+    flex: 1;
+}
+
+.entryTypeTag {
+    display: inline-block;
+    padding: 3px 8px;
+    background: #e2e8f0;
+    border-radius: 4px;
+    font-size: 11px;
+    font-weight: 500;
+    color: #475569;
+    margin-bottom: 6px;
+}
+
+.entryChief {
+    font-size: 14px;
+    color: #0f172a;
+    margin: 0 0 4px 0;
+}
+
+.entryDetail {
+    font-size: 13px;
+    color: #64748b;
+    margin: 0;
+}
+
+.consentLabel {
+    display: inline-block;
+    margin-top: 8px;
+    font-size: 11px;
+    color: #059669;
+    font-weight: 500;
+}
+
+/* Call Area */
+.callArea {
+    background: #1e293b;
+    border-radius: 16px;
+    overflow: hidden;
+    min-height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.callPlaceholder {
+    text-align: center;
+    color: white;
+    padding: 24px;
+}
+
+.callIcon {
+    font-size: 48px;
+    margin-bottom: 12px;
+}
+
+.callPlaceholder h3 {
+    font-size: 20px;
+    margin: 0 0 8px 0;
+}
+
+.callPlaceholder p {
+    font-size: 14px;
+    color: #94a3b8;
+    margin: 0 0 20px 0;
+}
+
+.startCallBtn {
+    padding: 14px 28px;
+    background: linear-gradient(135deg, #0d9488, #14b8a6);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.startCallBtn:hover {
+    transform: scale(1.05);
+}
+
+.callConnecting {
+    text-align: center;
+    color: white;
+}
+
+.connectingSpinner {
+    width: 48px;
+    height: 48px;
+    border: 4px solid rgba(255, 255, 255, 0.2);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 16px;
+}
+
+.callConnected {
+    width: 100%;
+    height: 100%;
+    min-height: 300px;
+    display: flex;
+    flex-direction: column;
+}
+
+.callVideo {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 120px;
+    gap: 12px;
+    padding: 16px;
+    position: relative;
+}
+
+.patientVideo,
+.doctorVideo {
+    background: #334155;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.patientVideo {
+    min-height: 200px;
+}
+
+.doctorVideo {
+    position: absolute;
+    right: 16px;
+    bottom: 16px;
+    width: 120px;
+    height: 90px;
+}
+
+.videoPlaceholder {
+    font-size: 36px;
+    color: white;
+}
+
+.doctorVideo .videoPlaceholder {
+    font-size: 24px;
+}
+
+.videoLabel {
+    font-size: 12px;
+    color: #94a3b8;
+}
+
+.callControls {
+    display: flex;
+    justify-content: center;
+    gap: 12px;
+    padding: 16px;
+    background: rgba(0, 0, 0, 0.3);
+}
+
+.callControlBtn {
+    width: 48px;
+    height: 48px;
+    background: #475569;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    font-size: 20px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.callControlBtn:hover {
+    background: #64748b;
+}
+
+.controlActive {
+    background: #dc2626 !important;
+}
+
+.endCallBtn {
+    padding: 12px 24px;
+    background: #dc2626;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.endCallBtn:hover {
+    background: #b91c1c;
+}
+
+/* Notes Card */
+.notesCard {
+    background: white;
+    padding: 24px;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+}
+
+.notesCard h2 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #0f172a;
+    margin: 0 0 4px 0;
+}
+
+.notesSubtitle {
+    font-size: 12px;
+    color: #94a3b8;
+    margin: 0 0 16px 0;
+}
+
+.notesTextarea {
+    width: 100%;
+    padding: 14px;
+    border: 2px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 14px;
+    font-family: inherit;
+    resize: vertical;
+    transition: border-color 0.2s;
+}
+
+.notesTextarea:focus {
+    outline: none;
+    border-color: #0d9488;
+}
+
+/* Prescription Card */
+.prescriptionCard {
+    background: white;
+    padding: 24px;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+}
+
+.prescriptionHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.prescriptionHeader h2 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #0f172a;
+    margin: 0;
+}
+
+.addRxBtn {
+    padding: 8px 14px;
+    background: #0d9488;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.rxForm {
+    padding: 16px;
+    background: #f8fafc;
+    border-radius: 10px;
+    margin-bottom: 16px;
+}
+
+.rxInput {
+    width: 100%;
+    padding: 12px 14px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 14px;
+    margin-bottom: 12px;
+}
+
+.rxRow {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.rxInputSmall {
+    padding: 10px 12px;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 13px;
+}
+
+.addMedBtn {
+    padding: 10px 18px;
+    background: #14b8a6;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.rxList {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.rxItem {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 14px;
+    background: #f0fdfa;
+    border-radius: 8px;
+}
+
+.rxDetails {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.rxDetails strong {
+    font-size: 14px;
+    color: #0f172a;
+}
+
+.rxDetails span {
+    font-size: 12px;
+    color: #64748b;
+}
+
+.removeBtn {
+    width: 28px;
+    height: 28px;
+    background: #fef2f2;
+    color: #dc2626;
+    border: none;
+    border-radius: 50%;
+    font-size: 12px;
+    cursor: pointer;
+}
+
+.demoNote {
+    padding: 10px 14px;
+    background: #fef3c7;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 500;
+    color: #92400e;
+    text-align: center;
+    margin: 0;
+}
+
+/* Actions Card */
+.actionsCard {
+    background: white;
+    padding: 24px;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.04);
+}
+
+.checkboxLabel {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    color: #475569;
+    cursor: pointer;
+    margin-bottom: 20px;
+}
+
+.checkboxLabel input {
+    width: 18px;
+    height: 18px;
+    accent-color: #0d9488;
+}
+
+.actionButtons {
+    display: flex;
+    gap: 12px;
+}
+
+.endCallAction {
+    flex: 1;
+    padding: 14px;
+    background: #f1f5f9;
+    color: #64748b;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.completeBtn {
+    flex: 2;
+    padding: 14px;
+    background: linear-gradient(135deg, #0d9488, #14b8a6);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(13, 148, 136, 0.3);
+}
+
+.completeBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(13, 148, 136, 0.4);
+}
+
+.savedMessage {
+    flex: 1;
+    padding: 16px;
+    background: #d1fae5;
+    color: #059669;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    text-align: center;
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+    .columns {
+        grid-template-columns: 1fr;
+    }
+
+    .leftColumn,
+    .rightColumn {
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 640px) {
+    .header {
+        padding: 10px 16px;
+    }
+
+    .headerTitle {
+        display: none;
+    }
+
+    .main {
+        padding: 16px;
+    }
+
+    .rxRow {
+        grid-template-columns: 1fr;
+    }
+
+    .actionButtons {
+        flex-direction: column;
+    }
+}
+
+/* ==== CONSOLIDATED INTAKE SUMMARY (Replaces Raw Logbook) ==== */
+
+.intakeSummaryCard {
+    background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+    border: 1px solid #0ea5e9;
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 16px;
+}
+
+.summaryHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid rgba(14, 165, 233, 0.2);
+}
+
+.summaryHeader h2 {
+    font-size: 17px;
+    font-weight: 600;
+    color: #0369a1;
+    margin: 0;
+}
+
+.assistiveBadge {
+    padding: 5px 12px;
+    background: linear-gradient(135deg, #fef3c7, #fde68a);
+    border: 1px solid #fbbf24;
+    border-radius: 50px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #92400e;
+}
+
+.summaryContent {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.summaryRow {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.summaryLabel {
+    font-size: 12px;
+    font-weight: 600;
+    color: #0369a1;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.summaryValue {
+    font-size: 14px;
+    color: #1e293b;
+    line-height: 1.6;
+}
+
+.summarySection {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.bulletList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.bulletList li {
+    font-size: 14px;
+    color: #334155;
+    padding-left: 18px;
+    position: relative;
+    line-height: 1.5;
+}
+
+.bulletList li::before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    color: #0ea5e9;
+    font-weight: bold;
+}
+
+/* Severity Badges */
+.severityBadge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: 13px;
+}
+
+.severityMild {
+    background: linear-gradient(135deg, #dcfce7, #bbf7d0);
+    border: 1px solid #22c55e;
+    color: #166534;
+}
+
+.severityModerate {
+    background: linear-gradient(135deg, #fef9c3, #fef08a);
+    border: 1px solid #eab308;
+    color: #854d0e;
+}
+
+.severitySevere {
+    background: linear-gradient(135deg, #fee2e2, #fecaca);
+    border: 1px solid #f87171;
+    color: #b91c1c;
+}
+
+/* Summary Footer */
+.summaryFooter {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+    margin-top: 20px;
+    padding-top: 14px;
+    border-top: 1px solid rgba(14, 165, 233, 0.2);
+}
+
+.dataSource {
+    display: flex;
+    gap: 6px;
+    font-size: 12px;
+    color: #64748b;
+}
+
+.footerLabel {
+    font-weight: 600;
+    color: #475569;
+}
+
+.summaryDisclaimer {
+    margin-top: 16px;
+    padding: 12px 16px;
+    background: rgba(255, 255, 255, 0.6);
+    border-radius: 10px;
+    font-size: 13px;
+    color: #64748b;
+    border: 1px solid rgba(14, 165, 233, 0.15);
+}
+
+/* Consent Revoked Card */
+.consentRevokedCard {
+    background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+    border: 1px solid #cbd5e1;
+    border-radius: 16px;
+    padding: 32px;
+    text-align: center;
+}
+
+.revokedIcon {
+    font-size: 48px;
+    margin-bottom: 16px;
+}
+
+.consentRevokedCard h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #475569;
+    margin: 0 0 10px;
+}
+
+.consentRevokedCard p {
+    font-size: 14px;
+    color: #64748b;
+    margin: 0;
+    max-width: 400px;
+    margin: 0 auto;
+    line-height: 1.6;
+}

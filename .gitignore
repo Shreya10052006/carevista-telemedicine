@@ -1,0 +1,114 @@
+# ==========================================
+# CareVista - Root .gitignore
+# ==========================================
+
+# ==========================================
+# ENVIRONMENT & SECRETS (CRITICAL)
+# ==========================================
+.env
+.env.local
+.env.development
+.env.production
+.env.*.local
+*.env
+
+# Firebase Credentials (NEVER COMMIT)
+firebase-service-account.json
+*-service-account.json
+firebase-adminsdk*.json
+
+# ==========================================
+# DEPENDENCY DIRECTORIES
+# ==========================================
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Python
+venv/
+.venv/
+env/
+ENV/
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+pip-log.txt
+pip-delete-this-directory.txt
+
+# ==========================================
+# BUILD OUTPUTS
+# ==========================================
+# Next.js
+.next/
+out/
+build/
+dist/
+
+# Python
+*.egg-info/
+*.egg
+.eggs/
+*.whl
+
+# ==========================================
+# IDE & EDITOR
+# ==========================================
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# ==========================================
+# LOGS & TEMP FILES
+# ==========================================
+*.log
+logs/
+*.tmp
+*.temp
+*.cache
+
+# ==========================================
+# TESTING
+# ==========================================
+coverage/
+.coverage
+htmlcov/
+.pytest_cache/
+.tox/
+.nox/
+
+# ==========================================
+# OS FILES
+# ==========================================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Desktop.ini
+
+# ==========================================
+# PROJECT SPECIFIC
+# ==========================================
+# TypeScript build info
+*.tsbuildinfo
+tsc_errors.txt
+
+# Whisper model cache (large files)
+whisper_models/
+*.pt
+
+# Agora temp files
+agora_temp/
+
+# E2E test artifacts
+test-results/
+playwright-report/

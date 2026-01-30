@@ -1,0 +1,226 @@
+.topBar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: var(--bg-primary);
+    border-bottom: 1px solid var(--border-color);
+    position: sticky;
+    top: 0;
+    z-index: var(--z-sticky);
+}
+
+.left {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: var(--spacing-xs);
+    border-radius: var(--radius-md);
+    transition: background var(--transition-fast);
+}
+
+.logo:hover {
+    background: var(--bg-tertiary);
+}
+
+.logoIcon {
+    font-size: 24px;
+}
+
+.logoText {
+    font-size: var(--font-size-lg);
+    font-weight: 700;
+    color: var(--color-primary);
+}
+
+.roleBadge {
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-xs);
+    font-weight: 600;
+}
+
+.roleDoctor {
+    background: var(--color-primary-light);
+    color: var(--color-primary);
+}
+
+.roleHealthWorker {
+    background: var(--color-warning-light);
+    color: var(--color-warning);
+}
+
+.rolePatient {
+    background: linear-gradient(135deg, #ccfbf1, #99f6e4);
+    color: #0d9488;
+}
+
+.right {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-md);
+}
+
+.status {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    border-radius: var(--radius-full);
+    font-size: var(--font-size-sm);
+    font-weight: 500;
+}
+
+.online {
+    background: var(--color-success-light);
+    color: var(--color-success);
+}
+
+.offline {
+    background: var(--color-warning-light);
+    color: var(--color-warning);
+}
+
+.statusDot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+.online .statusDot {
+    background: var(--color-success);
+}
+
+.offline .statusDot {
+    background: var(--color-warning);
+    animation: pulse 2s infinite;
+}
+
+.statusText {
+    display: none;
+}
+
+@media (min-width: 640px) {
+    .statusText {
+        display: inline;
+    }
+}
+
+.syncIndicator {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    color: var(--color-info);
+    font-size: var(--font-size-sm);
+}
+
+.syncIcon {
+    animation: spin 1s linear infinite;
+}
+
+.languageWrapper {
+    position: relative;
+}
+
+.languageButton {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-xs);
+    padding: var(--spacing-xs) var(--spacing-sm);
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    font-size: var(--font-size-sm);
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: all var(--transition-fast);
+}
+
+.languageButton:hover {
+    background: var(--bg-secondary);
+    border-color: var(--border-hover);
+}
+
+.languageMenu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin-top: var(--spacing-xs);
+    background: var(--bg-primary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-lg);
+    min-width: 150px;
+    z-index: var(--z-dropdown);
+    animation: fadeIn 0.2s ease;
+}
+
+.languageOption {
+    display: block;
+    width: 100%;
+    padding: var(--spacing-sm) var(--spacing-md);
+    background: none;
+    border: none;
+    text-align: left;
+    font-size: var(--font-size-sm);
+    color: var(--text-primary);
+    cursor: pointer;
+    transition: background var(--transition-fast);
+}
+
+.languageOption:first-child {
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}
+
+.languageOption:last-child {
+    border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+}
+
+.languageOption:hover {
+    background: var(--bg-tertiary);
+}
+
+.languageOption.active {
+    background: var(--color-primary-light);
+    color: var(--color-primary);
+    font-weight: 600;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-4px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

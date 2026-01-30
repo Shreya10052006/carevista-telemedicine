@@ -1,0 +1,573 @@
+/**
+ * Symptom Logbook - Premium Timeline Design
+ * ==========================================
+ * Hospital-grade medical diary with visual timeline.
+ * Elder-friendly typography, clear hierarchy.
+ */
+
+/* ===== PAGE BASE ===== */
+.page {
+    min-height: 100vh;
+    background: linear-gradient(180deg, #f0f9ff 0%, #e0f2fe 40%, #f8fafc 100%);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.demoBadge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background: linear-gradient(135deg, #fef9c3, #fef3c7);
+    border-bottom: 1px solid #fcd34d;
+    font-size: 13px;
+    font-weight: 600;
+    color: #92400e;
+}
+
+.demoDot {
+    width: 8px;
+    height: 8px;
+    background: #f59e0b;
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.main {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px 16px 40px;
+}
+
+/* ===== HEADER ===== */
+.header {
+    margin-bottom: 20px;
+}
+
+.backLink {
+    color: #64748b;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.backLink:hover {
+    color: #0d9488;
+}
+
+.title {
+    font-size: 28px;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 8px 0 4px;
+}
+
+.subtitle {
+    font-size: 15px;
+    color: #64748b;
+    margin: 0;
+}
+
+/* ===== ADD ACTIONS ===== */
+.addActions {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.addButton,
+.addButtonVoice {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 16px 12px;
+    border-radius: 14px;
+    text-decoration: none;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.25s ease;
+}
+
+.addButton {
+    background: rgba(255, 255, 255, 0.85);
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    color: #334155;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.addButton:hover {
+    background: white;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+}
+
+.addButtonVoice {
+    background: linear-gradient(135deg, #0f172a, #1e293b);
+    border: 1px solid rgba(13, 148, 136, 0.3);
+    color: white;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}
+
+.addButtonVoice:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+.addIcon {
+    font-size: 24px;
+}
+
+/* ===== FILTER ROW ===== */
+.filterRow {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+    padding: 4px;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 12px;
+    border: 1px solid rgba(226, 232, 240, 0.6);
+}
+
+.filterBtn {
+    flex: 1;
+    padding: 10px 12px;
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    color: #64748b;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.filterBtn:hover {
+    background: rgba(255, 255, 255, 0.8);
+    color: #334155;
+}
+
+.filterBtn.active {
+    background: white;
+    color: #0d9488;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+/* ===== TIMELINE ===== */
+.timeline {
+    margin-bottom: 24px;
+}
+
+/* ===== DATE GROUP ===== */
+.dateGroup {
+    margin-bottom: 20px;
+}
+
+.dateHeader {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.dateLine {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, #e2e8f0, transparent);
+}
+
+.dateLabel {
+    font-size: 13px;
+    font-weight: 700;
+    color: #64748b;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+}
+
+.entriesGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* ===== ENTRY CARD ===== */
+.entryCard {
+    display: flex;
+    gap: 12px;
+}
+
+/* Timeline Connector */
+.timelineConnector {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 24px;
+    flex-shrink: 0;
+}
+
+.timelineDot {
+    width: 12px;
+    height: 12px;
+    background: linear-gradient(135deg, #0d9488, #0891b2);
+    border-radius: 50%;
+    border: 2px solid white;
+    box-shadow: 0 2px 6px rgba(13, 148, 136, 0.3);
+    flex-shrink: 0;
+}
+
+.timelineLine {
+    flex: 1;
+    width: 2px;
+    background: #e2e8f0;
+    margin-top: 4px;
+}
+
+/* Entry Content */
+.entryContent {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid rgba(226, 232, 240, 0.7);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    transition: all 0.25s ease;
+}
+
+.entryContent:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+.entryHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 16px;
+    cursor: pointer;
+    border-bottom: 1px solid rgba(226, 232, 240, 0.5);
+}
+
+.entryMeta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.entryTime {
+    font-size: 13px;
+    color: #64748b;
+    font-weight: 500;
+}
+
+.typeBadge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 10px;
+    border-radius: 16px;
+    font-size: 11px;
+    font-weight: 600;
+    color: white;
+}
+
+.typeBadge.blue {
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+}
+
+.typeBadge.purple {
+    background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+}
+
+.typeBadge.teal {
+    background: linear-gradient(135deg, #0d9488, #0891b2);
+}
+
+.expandIcon {
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #f1f5f9;
+    border-radius: 8px;
+    font-size: 16px;
+    color: #64748b;
+    font-weight: 600;
+}
+
+/* ===== ENTRY SUMMARY ===== */
+.entrySummary {
+    padding: 14px 16px;
+}
+
+.chiefComplaint {
+    font-size: 15px;
+    color: #0f172a;
+    line-height: 1.5;
+    margin: 0 0 10px;
+}
+
+.tagsRow {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    align-items: center;
+}
+
+/* Severity Pills */
+.severityPill {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: capitalize;
+}
+
+.severityMild {
+    background: #d1fae5;
+    color: #065f46;
+    border: 1px solid #a7f3d0;
+}
+
+.severityModerate {
+    background: #fef3c7;
+    color: #92400e;
+    border: 1px solid #fcd34d;
+}
+
+.severitySevere {
+    background: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #fca5a5;
+}
+
+.severityPending {
+    background: #f1f5f9;
+    color: #64748b;
+    border: 1px solid #e2e8f0;
+}
+
+/* Status Tags */
+.statusShared,
+.statusNotShared,
+.statusReviewed {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 3px 8px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.statusShared {
+    background: #d1fae5;
+    color: #15803d;
+}
+
+.statusNotShared {
+    background: #f1f5f9;
+    color: #64748b;
+}
+
+.statusReviewed {
+    background: #dbeafe;
+    color: #1d4ed8;
+}
+
+/* ===== ENTRY DETAILS ===== */
+.entryDetails {
+    padding: 0 16px 16px;
+    border-top: 1px solid rgba(226, 232, 240, 0.5);
+    animation: slideDown 0.2s ease;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.detailSection {
+    padding-top: 14px;
+}
+
+.showTranscriptBtn {
+    display: inline-block;
+    padding: 8px 12px;
+    background: #f1f5f9;
+    border: none;
+    border-radius: 8px;
+    font-size: 13px;
+    color: #64748b;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.showTranscriptBtn:hover {
+    background: #e2e8f0;
+    color: #334155;
+}
+
+.transcriptHidden {
+    display: none;
+    margin-top: 10px;
+    padding: 12px;
+    background: #f8fafc;
+    border-radius: 10px;
+    border: 1px solid #e2e8f0;
+}
+
+.transcriptHidden.visible {
+    display: block;
+}
+
+.originalText {
+    font-size: 14px;
+    color: #334155;
+    line-height: 1.6;
+    margin: 0;
+    white-space: pre-wrap;
+}
+
+.detailRow {
+    display: flex;
+    gap: 8px;
+    padding: 10px 0;
+    border-bottom: 1px solid #f1f5f9;
+    font-size: 14px;
+}
+
+.detailLabel {
+    color: #64748b;
+    font-weight: 600;
+    min-width: 100px;
+}
+
+.audioIndicator {
+    margin-top: 12px;
+    padding: 10px;
+    background: #f0fdf4;
+    border: 1px solid #86efac;
+    border-radius: 8px;
+    font-size: 13px;
+    color: #16a34a;
+    text-align: center;
+}
+
+.consentControl {
+    margin-top: 14px;
+    padding: 12px;
+    background: #f8fafc;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.consentLabel {
+    font-size: 13px;
+    color: #64748b;
+}
+
+/* ===== EMPTY STATE ===== */
+.emptyState {
+    text-align: center;
+    padding: 48px 24px;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 20px;
+    border: 2px dashed #e2e8f0;
+}
+
+.emptyIcon {
+    font-size: 48px;
+    margin-bottom: 16px;
+    display: block;
+}
+
+.emptyState h3 {
+    font-size: 18px;
+    color: #334155;
+    margin: 0 0 8px;
+}
+
+.emptyState p {
+    font-size: 14px;
+    color: #64748b;
+    margin: 0;
+}
+
+/* ===== PRIVACY NOTICE ===== */
+.privacyNotice {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 16px 20px;
+    background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+    border: 1px solid rgba(34, 197, 94, 0.25);
+    border-radius: 14px;
+    color: #15803d;
+    font-size: 14px;
+    font-weight: 500;
+    text-align: center;
+}
+
+.privacyIcon {
+    font-size: 18px;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 480px) {
+    .main {
+        padding: 16px 12px 32px;
+    }
+
+    .title {
+        font-size: 24px;
+    }
+
+    .addActions {
+        gap: 8px;
+    }
+
+    .addButton,
+    .addButtonVoice {
+        padding: 14px 10px;
+    }
+
+    .addIcon {
+        font-size: 20px;
+    }
+
+    .entryHeader {
+        padding: 12px 14px;
+    }
+
+    .entrySummary {
+        padding: 12px 14px;
+    }
+
+    .timelineConnector {
+        width: 20px;
+    }
+}

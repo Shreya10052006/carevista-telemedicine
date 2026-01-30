@@ -1,0 +1,788 @@
+/**
+ * Medical Records Page - Premium Hospital CSS
+ * ============================================
+ * Tabs, reports, read aloud, and privacy notices.
+ */
+
+/* ===== PAGE BASE ===== */
+.page {
+    min-height: 100vh;
+    background: linear-gradient(180deg, #f0f9ff 0%, #e0f2fe 40%, #f8fafc 100%);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.demoBadge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background: linear-gradient(135deg, #fef9c3, #fef3c7);
+    border-bottom: 1px solid #fcd34d;
+    font-size: 13px;
+    font-weight: 600;
+    color: #92400e;
+}
+
+.demoDot {
+    width: 8px;
+    height: 8px;
+    background: #f59e0b;
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.main {
+    max-width: 640px;
+    margin: 0 auto;
+    padding: 20px 16px 40px;
+}
+
+/* ===== HEADER ===== */
+.header {
+    margin-bottom: 20px;
+}
+
+.backLink {
+    color: #64748b;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.backLink:hover {
+    color: #0d9488;
+}
+
+.title {
+    font-size: 26px;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 8px 0 4px;
+}
+
+.subtitle {
+    font-size: 15px;
+    color: #64748b;
+    margin: 0;
+}
+
+/* ===== SUMMARY CARD ===== */
+.summaryCard {
+    padding: 16px;
+    background: white;
+    border-radius: 18px;
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+    margin-bottom: 16px;
+}
+
+.summaryRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+}
+
+.summaryItem {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 12px;
+    transition: all 0.2s ease;
+}
+
+.summaryItem:hover {
+    background: #f0f9ff;
+}
+
+.summaryItemActive {
+    background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+}
+
+.summaryIcon {
+    font-size: 22px;
+}
+
+.summaryValue {
+    font-size: 24px;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.summaryLabel {
+    font-size: 11px;
+    color: #64748b;
+    font-weight: 500;
+}
+
+.summaryDivider {
+    width: 1px;
+    height: 40px;
+    background: #e2e8f0;
+}
+
+/* ===== TABS ===== */
+.tabs {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 16px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+}
+
+.tab {
+    flex: 1;
+    padding: 10px 12px;
+    background: white;
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    border-radius: 12px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #64748b;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all 0.2s ease;
+}
+
+.tab:hover {
+    border-color: #0891b2;
+    color: #0d9488;
+}
+
+.tabActive {
+    background: linear-gradient(135deg, #0d9488, #0891b2);
+    color: white;
+    border-color: transparent;
+    box-shadow: 0 4px 12px rgba(13, 148, 136, 0.3);
+}
+
+.tabContent {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ===== ACCESSIBILITY NOTICE ===== */
+.accessibilityNotice {
+    padding: 12px 16px;
+    background: linear-gradient(135deg, #dbeafe, #e0f2fe);
+    border: 1px solid rgba(59, 130, 246, 0.2);
+    border-radius: 12px;
+    font-size: 13px;
+    color: #1e40af;
+    text-align: center;
+    margin-bottom: 8px;
+}
+
+/* ===== EMPTY STATE ===== */
+.emptyState {
+    text-align: center;
+    padding: 48px 24px;
+    background: white;
+    border-radius: 18px;
+    border: 1px solid rgba(226, 232, 240, 0.8);
+}
+
+.emptyIcon {
+    font-size: 48px;
+    display: block;
+    margin-bottom: 16px;
+}
+
+.emptyState p {
+    color: #64748b;
+    font-size: 16px;
+    margin: 0 0 16px;
+}
+
+.emptyAction {
+    display: inline-block;
+    padding: 12px 24px;
+    background: linear-gradient(135deg, #0d9488, #0891b2);
+    color: white;
+    text-decoration: none;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+.emptyAction:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(13, 148, 136, 0.3);
+}
+
+/* ===== CONSULT CARD ===== */
+.consultCard {
+    padding: 20px;
+    background: white;
+    border-radius: 18px;
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    transition: all 0.2s ease;
+}
+
+.consultCard:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+}
+
+.consultHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 14px;
+}
+
+.doctorInfo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.doctorAvatar {
+    font-size: 36px;
+}
+
+.doctorName {
+    display: block;
+    font-size: 16px;
+    color: #0f172a;
+    margin-bottom: 2px;
+}
+
+.specialty {
+    font-size: 13px;
+    color: #64748b;
+    margin: 0;
+}
+
+.consultMeta {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 4px;
+}
+
+.statusBadge {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 8px;
+    background: #dcfce7;
+    color: #16a34a;
+}
+
+.consultDateBadge {
+    font-size: 12px;
+    color: #64748b;
+}
+
+/* ===== SUMMARY SECTION ===== */
+.summarySection {
+    padding: 14px;
+    background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+    border-radius: 12px;
+    margin-bottom: 12px;
+}
+
+.summarySectionHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.summarySectionHeader label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #64748b;
+}
+
+.summaryText {
+    margin: 0;
+    font-size: 14px;
+    color: #334155;
+    line-height: 1.6;
+}
+
+/* ===== READ ALOUD BUTTONS ===== */
+.readAloudBtn {
+    padding: 6px 12px;
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.readAloudBtn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 2px 8px rgba(59, 130, 246, 0.4);
+}
+
+.readAloudBtnActive {
+    background: linear-gradient(135deg, #dc2626, #ef4444);
+    animation: pulsing 1s infinite;
+}
+
+.readAloudBtnFull {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: 12px;
+    transition: all 0.2s ease;
+}
+
+.readAloudBtnFull:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+}
+
+@keyframes pulsing {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.8;
+    }
+}
+
+/* ===== PRESCRIPTION PREVIEW ===== */
+.prescriptionPreview {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 14px;
+    background: #f0fdf4;
+    border: 1px solid rgba(34, 197, 94, 0.2);
+    border-radius: 10px;
+    font-size: 13px;
+    color: #16a34a;
+}
+
+.prescriptionIcon {
+    font-size: 16px;
+}
+
+.viewPrescriptionBtn {
+    margin-left: auto;
+    background: none;
+    border: none;
+    color: #0d9488;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+/* ===== PRESCRIPTION CARD ===== */
+.prescriptionCard {
+    padding: 20px;
+    background: white;
+    border-radius: 18px;
+    border: 1px solid rgba(226, 232, 240, 0.8);
+}
+
+.prescriptionHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 16px;
+}
+
+.prescriptionTitle {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.prescriptionIconLarge {
+    font-size: 32px;
+}
+
+.prescriptionTitle strong {
+    font-size: 16px;
+    color: #0f172a;
+}
+
+.prescribedBy {
+    font-size: 13px;
+    color: #64748b;
+    margin: 2px 0 0 0;
+}
+
+.prescriptionDate {
+    font-size: 13px;
+    color: #64748b;
+}
+
+.medicineList {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.medicineItem {
+    padding: 14px;
+    background: linear-gradient(135deg, #f0fdf4, #ecfdf5);
+    border: 1px solid rgba(34, 197, 94, 0.2);
+    border-radius: 12px;
+}
+
+.medicineHeader {
+    margin-bottom: 6px;
+}
+
+.medicineName {
+    font-size: 15px;
+    color: #0f172a;
+}
+
+.medicineDetails {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    font-size: 12px;
+    color: #64748b;
+}
+
+.demoNotice {
+    padding: 12px;
+    background: linear-gradient(135deg, #fffbeb, #fef3c7);
+    border: 1px solid rgba(245, 158, 11, 0.25);
+    border-radius: 10px;
+    font-size: 12px;
+    color: #92400e;
+    text-align: center;
+    font-weight: 500;
+    margin-top: 12px;
+}
+
+/* ===== REPORT CARD ===== */
+.reportCard {
+    background: white;
+    border-radius: 16px;
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    overflow: hidden;
+}
+
+.reportHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    cursor: pointer;
+    transition: background 0.2s ease;
+}
+
+.reportHeader:hover {
+    background: #f8fafc;
+}
+
+.reportInfo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.reportIcon {
+    font-size: 28px;
+}
+
+.reportName {
+    font-size: 15px;
+    color: #0f172a;
+    display: block;
+}
+
+.labName {
+    font-size: 12px;
+    color: #64748b;
+    margin: 2px 0 0 0;
+}
+
+.reportMeta {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.reportDate {
+    font-size: 12px;
+    color: #64748b;
+}
+
+.expandIcon {
+    font-size: 10px;
+    color: #94a3b8;
+}
+
+.reportDetails {
+    padding: 0 16px 16px;
+    border-top: 1px solid #e2e8f0;
+    animation: fadeIn 0.2s ease;
+}
+
+.findingsSection {
+    padding: 14px;
+    background: linear-gradient(135deg, #fef3c7, #fef9c3);
+    border-radius: 12px;
+    margin-top: 12px;
+}
+
+.findingsSection label {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    color: #92400e;
+    margin-bottom: 6px;
+}
+
+.findingsSection p {
+    margin: 0 0 10px;
+    font-size: 14px;
+    color: #78350f;
+    line-height: 1.5;
+}
+
+/* ===== VALUES TABLE ===== */
+.valuesTable {
+    margin-top: 14px;
+}
+
+.valuesHeader {
+    display: grid;
+    grid-template-columns: 1fr 1fr 100px;
+    gap: 8px;
+    padding: 10px 12px;
+    background: #f1f5f9;
+    border-radius: 10px 10px 0 0;
+    font-size: 11px;
+    font-weight: 600;
+    color: #64748b;
+}
+
+.valuesRow {
+    display: grid;
+    grid-template-columns: 1fr 1fr 100px;
+    gap: 8px;
+    padding: 12px;
+    border-bottom: 1px solid #e2e8f0;
+}
+
+.valuesRow:last-child {
+    border-bottom: none;
+    border-radius: 0 0 10px 10px;
+}
+
+.valueName {
+    font-size: 13px;
+    color: #334155;
+}
+
+.valueResult {
+    font-size: 13px;
+    font-weight: 600;
+    color: #0f172a;
+}
+
+.valueStatus {
+    font-size: 12px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 6px;
+    text-align: center;
+}
+
+.statusNormal {
+    background: #dcfce7;
+    color: #16a34a;
+}
+
+.statusHigh {
+    background: #fee2e2;
+    color: #dc2626;
+}
+
+.statusLow {
+    background: #fef3c7;
+    color: #d97706;
+}
+
+/* ===== RECORD CARD ===== */
+.recordCard {
+    padding: 18px;
+    background: white;
+    border-radius: 16px;
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    transition: all 0.2s ease;
+}
+
+.recordCard:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+}
+
+.recordHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.recordMeta {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.recordTypeIcon {
+    font-size: 18px;
+}
+
+.recordDate {
+    font-size: 13px;
+    color: #64748b;
+}
+
+.recordTypeBadge {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 10px;
+    border-radius: 8px;
+    background: #f1f5f9;
+    color: #64748b;
+    text-transform: capitalize;
+}
+
+.typeVoice {
+    background: #dbeafe;
+    color: #1e40af;
+}
+
+.typeChatbot {
+    background: #e0f2fe;
+    color: #0369a1;
+}
+
+.typeManual {
+    background: #f3e8ff;
+    color: #7c3aed;
+}
+
+.recordSummary {
+    font-size: 15px;
+    color: #334155;
+    margin: 0 0 12px;
+    line-height: 1.5;
+}
+
+.recordFooter {
+    display: flex;
+    align-items: center;
+}
+
+.sharedBadge {
+    font-size: 12px;
+    color: #16a34a;
+    font-weight: 500;
+}
+
+.privateBadge {
+    font-size: 12px;
+    color: #64748b;
+    font-weight: 500;
+}
+
+/* ===== PRIVACY NOTICE ===== */
+.privacyNotice {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 24px;
+    padding: 16px 20px;
+    background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+    border: 1px solid rgba(34, 197, 94, 0.25);
+    border-radius: 14px;
+    color: #15803d;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.privacyIcon {
+    font-size: 18px;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 480px) {
+    .main {
+        padding: 16px 12px 32px;
+    }
+
+    .title {
+        font-size: 24px;
+    }
+
+    .summaryCard {
+        padding: 12px;
+    }
+
+    .summaryValue {
+        font-size: 20px;
+    }
+
+    .summaryLabel {
+        font-size: 10px;
+    }
+
+    .tab {
+        padding: 8px 10px;
+        font-size: 11px;
+    }
+
+    .valuesHeader,
+    .valuesRow {
+        grid-template-columns: 1fr 1fr 80px;
+        font-size: 11px;
+    }
+}

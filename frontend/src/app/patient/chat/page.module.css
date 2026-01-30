@@ -1,0 +1,442 @@
+/**
+ * Guided Health Intake - Premium Clinical Design
+ * ===============================================
+ * Finite intake wizard UI with clear progress.
+ * Neutral, clinical aesthetic — no playful elements.
+ */
+
+/* ===== PAGE BASE ===== */
+.page {
+    min-height: 100vh;
+    background: linear-gradient(180deg, #f0f9ff 0%, #e0f2fe 40%, #f8fafc 100%);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.demoBadge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background: linear-gradient(135deg, #fef9c3, #fef3c7);
+    border-bottom: 1px solid #fcd34d;
+    font-size: 13px;
+    font-weight: 600;
+    color: #92400e;
+}
+
+.demoDot {
+    width: 8px;
+    height: 8px;
+    background: #f59e0b;
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.main {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 20px 16px 40px;
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100vh - 60px);
+}
+
+/* ===== HEADER ===== */
+.header {
+    margin-bottom: 16px;
+}
+
+.backLink {
+    color: #64748b;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.backLink:hover {
+    color: #0d9488;
+}
+
+.title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 8px 0 4px;
+}
+
+.subtitle {
+    font-size: 14px;
+    color: #64748b;
+    margin: 0;
+}
+
+/* ===== PROGRESS SECTION ===== */
+.progressSection {
+    margin-bottom: 16px;
+}
+
+.progressHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+}
+
+.progressLabel {
+    font-size: 14px;
+    font-weight: 600;
+    color: #0d9488;
+}
+
+.progressMax {
+    font-size: 12px;
+    color: #94a3b8;
+}
+
+.progressBar {
+    height: 8px;
+    background: #e2e8f0;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progressFill {
+    height: 100%;
+    background: linear-gradient(90deg, #0d9488, #0891b2);
+    border-radius: 4px;
+    transition: width 0.4s ease;
+}
+
+/* ===== DISCLAIMER ===== */
+.disclaimer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 16px;
+    background: linear-gradient(135deg, #dbeafe, #bfdbfe);
+    border: 1px solid rgba(59, 130, 246, 0.25);
+    border-radius: 12px;
+    color: #1e40af;
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 16px;
+}
+
+.disclaimerIcon {
+    font-size: 16px;
+}
+
+/* ===== CHAT CONTAINER ===== */
+.chatContainer {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 20px;
+    background: white;
+    border-radius: 20px;
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+    margin-bottom: 16px;
+    min-height: 280px;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+/* ===== MESSAGES ===== */
+.message {
+    max-width: 85%;
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.userMessage {
+    align-self: flex-end;
+}
+
+.assistantMessage {
+    align-self: flex-start;
+}
+
+.messageContent {
+    padding: 14px 18px;
+    border-radius: 18px;
+    line-height: 1.6;
+    font-size: 15px;
+    white-space: pre-wrap;
+}
+
+.userMessage .messageContent {
+    background: linear-gradient(135deg, #0d9488, #0891b2);
+    color: white;
+    border-bottom-right-radius: 6px;
+}
+
+.assistantMessage .messageContent {
+    background: #f1f5f9;
+    color: #334155;
+    border-bottom-left-radius: 6px;
+}
+
+/* Processing Dots */
+.processingDots {
+    display: flex;
+    gap: 4px;
+    padding: 16px 20px;
+    background: #f1f5f9;
+    border-radius: 18px;
+    border-bottom-left-radius: 6px;
+}
+
+.processingDots span {
+    width: 8px;
+    height: 8px;
+    background: #94a3b8;
+    border-radius: 50%;
+    animation: dotPulse 1.2s ease-in-out infinite;
+}
+
+.processingDots span:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.processingDots span:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes dotPulse {
+
+    0%,
+    60%,
+    100% {
+        transform: scale(1);
+        opacity: 0.5;
+    }
+
+    30% {
+        transform: scale(1.3);
+        opacity: 1;
+    }
+}
+
+/* ===== INPUT AREA ===== */
+.inputArea {
+    display: flex;
+    gap: 10px;
+}
+
+.input {
+    flex: 1;
+    padding: 16px 20px;
+    background: white;
+    border: 2px solid #e2e8f0;
+    border-radius: 14px;
+    font-size: 16px;
+    font-family: inherit;
+    transition: border-color 0.2s;
+}
+
+.input:focus {
+    outline: none;
+    border-color: #0d9488;
+}
+
+.sendButton {
+    padding: 16px 28px;
+    background: linear-gradient(135deg, #0d9488, #0891b2);
+    color: white;
+    border: none;
+    border-radius: 14px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba(13, 148, 136, 0.3);
+}
+
+.sendButton:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(13, 148, 136, 0.4);
+}
+
+/* ===== COMPLETION SECTION ===== */
+.completionSection {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.summaryCard {
+    padding: 24px;
+    background: white;
+    border-radius: 20px;
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+}
+
+.summaryTitle {
+    font-size: 18px;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0 0 16px;
+}
+
+.summaryRow {
+    display: flex;
+    gap: 8px;
+    padding: 12px 0;
+    border-bottom: 1px solid #f1f5f9;
+    font-size: 15px;
+}
+
+.summaryRow:last-of-type {
+    border-bottom: none;
+}
+
+.summaryLabel {
+    font-weight: 600;
+    color: #64748b;
+    min-width: 120px;
+}
+
+.severityValue {
+    padding: 2px 10px;
+    background: #fef3c7;
+    border-radius: 6px;
+    color: #92400e;
+    font-weight: 500;
+}
+
+.aiLabel {
+    margin-top: 16px;
+    padding: 12px;
+    background: linear-gradient(135deg, #f0f9ff, #e0f2fe);
+    border-radius: 10px;
+    font-size: 12px;
+    color: #0369a1;
+    text-align: center;
+    font-weight: 500;
+}
+
+/* ===== ACTION BUTTONS ===== */
+.actionButtons {
+    display: flex;
+    gap: 12px;
+}
+
+.saveButton {
+    flex: 1;
+    padding: 16px 20px;
+    background: linear-gradient(135deg, #16a34a, #15803d);
+    color: white;
+    border: none;
+    border-radius: 14px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba(22, 163, 74, 0.3);
+}
+
+.saveButton:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(22, 163, 74, 0.4);
+}
+
+.savedConfirm {
+    flex: 1;
+    padding: 16px 20px;
+    background: #d1fae5;
+    border: 1px solid #86efac;
+    border-radius: 14px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #15803d;
+    text-align: center;
+}
+
+.consultButton {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px 20px;
+    background: linear-gradient(135deg, #0d9488, #0891b2);
+    color: white;
+    border: none;
+    border-radius: 14px;
+    font-size: 16px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba(13, 148, 136, 0.3);
+}
+
+.consultButton:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(13, 148, 136, 0.4);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 480px) {
+    .main {
+        padding: 16px 12px 32px;
+    }
+
+    .title {
+        font-size: 22px;
+    }
+
+    .chatContainer {
+        padding: 16px;
+        min-height: 240px;
+        max-height: 320px;
+    }
+
+    .messageContent {
+        padding: 12px 14px;
+        font-size: 14px;
+    }
+
+    .input {
+        padding: 14px 16px;
+        font-size: 15px;
+    }
+
+    .sendButton {
+        padding: 14px 20px;
+    }
+
+    .actionButtons {
+        flex-direction: column;
+    }
+
+    .summaryCard {
+        padding: 20px;
+    }
+}

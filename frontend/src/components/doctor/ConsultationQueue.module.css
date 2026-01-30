@@ -1,0 +1,231 @@
+.container {
+    padding: 1.5rem;
+    background: var(--surface, #f8fafc);
+    border-radius: 12px;
+    min-height: 400px;
+}
+
+.header {
+    margin-bottom: 1.5rem;
+}
+
+.title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--text-primary, #1e293b);
+    margin: 0 0 0.25rem 0;
+}
+
+.subtitle {
+    font-size: 1rem;
+    color: var(--text-secondary, #64748b);
+    margin: 0 0 0.5rem 0;
+}
+
+.disclaimer {
+    font-size: 0.875rem;
+    color: var(--text-muted, #94a3b8);
+    background: var(--info-bg, #eff6ff);
+    padding: 0.5rem 0.75rem;
+    border-radius: 6px;
+    margin: 0.5rem 0 0 0;
+    border-left: 3px solid var(--info, #3b82f6);
+}
+
+.loading,
+.error,
+.empty {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 200px;
+    color: var(--text-secondary, #64748b);
+}
+
+.error {
+    color: var(--error, #dc2626);
+}
+
+.retryButton {
+    margin-top: 1rem;
+    padding: 0.5rem 1rem;
+    background: var(--primary, #2563eb);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.queue {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.patientCard {
+    background: white;
+    border-radius: 10px;
+    padding: 1rem;
+    border-left: 4px solid;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.cardHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.75rem;
+}
+
+.triageTag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    color: white;
+    font-size: 0.875rem;
+    font-weight: 500;
+}
+
+.overrideBadge {
+    background: rgba(255, 255, 255, 0.3);
+    padding: 0.125rem 0.5rem;
+    border-radius: 10px;
+    font-size: 0.75rem;
+}
+
+.waitTime {
+    font-size: 0.875rem;
+    color: var(--text-secondary, #64748b);
+}
+
+.cardBody {
+    margin-bottom: 1rem;
+}
+
+.patientName {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--text-primary, #1e293b);
+    margin: 0 0 0.5rem 0;
+}
+
+.preview {
+    font-size: 0.875rem;
+    color: var(--text-secondary, #64748b);
+    margin: 0 0 0.5rem 0;
+    line-height: 1.4;
+}
+
+.meta {
+    display: flex;
+    gap: 1rem;
+    font-size: 0.75rem;
+}
+
+.consentStatus {
+    color: var(--success, #16a34a);
+}
+
+.consultType {
+    color: var(--text-muted, #94a3b8);
+}
+
+.cardActions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.selectButton {
+    flex: 1;
+    padding: 0.625rem 1rem;
+    background: var(--primary, #2563eb);
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.selectButton:hover {
+    background: var(--primary-dark, #1d4ed8);
+}
+
+.overrideButton {
+    padding: 0.625rem 1rem;
+    background: transparent;
+    color: var(--text-secondary, #64748b);
+    border: 1px solid var(--border, #e2e8f0);
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.overrideButton:hover {
+    background: var(--surface, #f1f5f9);
+    color: var(--text-primary, #1e293b);
+}
+
+.overrideModal {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: white;
+    padding: 1rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    z-index: 10;
+    margin-top: 0.5rem;
+}
+
+.overrideModal h4 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1rem;
+}
+
+.overrideDisclaimer {
+    font-size: 0.75rem;
+    color: var(--text-muted, #94a3b8);
+    margin: 0 0 0.75rem 0;
+}
+
+.overrideOptions {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+}
+
+.overrideOptions button {
+    flex: 1;
+    padding: 0.5rem;
+    border: none;
+    border-radius: 6px;
+    color: white;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.cancelButton {
+    width: 100%;
+    padding: 0.5rem;
+    background: var(--surface, #f1f5f9);
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.aiDisclaimer {
+    margin-top: 1.5rem;
+    padding: 0.75rem;
+    background: var(--warning-bg, #fef3c7);
+    border-radius: 6px;
+    text-align: center;
+}
+
+.aiDisclaimer small {
+    color: var(--warning-text, #92400e);
+}

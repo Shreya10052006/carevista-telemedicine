@@ -1,0 +1,578 @@
+/**
+ * Consult a Doctor - Premium Booking Flow CSS
+ * ============================================
+ * Step indicator, clear consent, calm waiting UI.
+ */
+
+/* ===== PAGE BASE ===== */
+.page {
+    min-height: 100vh;
+    background: linear-gradient(180deg, #f0f9ff 0%, #e0f2fe 40%, #f8fafc 100%);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.demoBadge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background: linear-gradient(135deg, #fef9c3, #fef3c7);
+    border-bottom: 1px solid #fcd34d;
+    font-size: 13px;
+    font-weight: 600;
+    color: #92400e;
+}
+
+.demoDot {
+    width: 8px;
+    height: 8px;
+    background: #f59e0b;
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        opacity: 1;
+    }
+
+    50% {
+        opacity: 0.5;
+    }
+}
+
+.main {
+    max-width: 520px;
+    margin: 0 auto;
+    padding: 20px 16px 40px;
+}
+
+/* ===== HEADER ===== */
+.header {
+    margin-bottom: 24px;
+}
+
+.backLink {
+    color: #64748b;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.backLink:hover {
+    color: #0d9488;
+}
+
+.title {
+    font-size: 26px;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 8px 0 4px;
+}
+
+.subtitle {
+    font-size: 15px;
+    color: #64748b;
+    margin: 0;
+}
+
+/* ===== STEP INDICATOR ===== */
+.stepIndicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 28px;
+    padding: 16px;
+    background: white;
+    border-radius: 16px;
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.stepItem {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.stepCircle {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #e2e8f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    font-weight: 600;
+    color: #64748b;
+    transition: all 0.3s ease;
+}
+
+.stepActive {
+    background: linear-gradient(135deg, #0d9488, #0891b2);
+    color: white;
+}
+
+.stepComplete {
+    background: #16a34a;
+    color: white;
+}
+
+.stepLabel {
+    font-size: 12px;
+    color: #94a3b8;
+    font-weight: 500;
+    margin-right: 8px;
+}
+
+.stepLabelActive {
+    color: #0d9488;
+}
+
+.stepLine {
+    width: 24px;
+    height: 2px;
+    background: #e2e8f0;
+    margin-right: 8px;
+}
+
+.stepLineActive {
+    background: #0d9488;
+}
+
+/* ===== STEP CONTENT ===== */
+.stepContent {
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.stepTitle {
+    font-size: 22px;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0 0 8px;
+}
+
+.stepSubtitle {
+    color: #64748b;
+    margin: 0 0 20px;
+    font-size: 15px;
+}
+
+/* ===== TYPE OPTIONS ===== */
+.typeOptions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.typeCard {
+    position: relative;
+    padding: 28px 16px;
+    background: white;
+    border: 2px solid rgba(226, 232, 240, 0.8);
+    border-radius: 18px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+}
+
+.typeCard:hover {
+    border-color: #0891b2;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.08);
+}
+
+.typeCardSelected {
+    border-color: #0d9488;
+    background: linear-gradient(135deg, #f0fdfa, #ccfbf1);
+    box-shadow: 0 4px 16px rgba(13, 148, 136, 0.15);
+}
+
+.typeIcon {
+    font-size: 40px;
+    display: block;
+    margin-bottom: 12px;
+}
+
+.typeCard strong {
+    display: block;
+    font-size: 16px;
+    color: #0f172a;
+    margin-bottom: 4px;
+}
+
+.typeCard p {
+    font-size: 13px;
+    color: #64748b;
+    margin: 0;
+}
+
+.selectedBadge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    width: 24px;
+    height: 24px;
+    background: #0d9488;
+    color: white;
+    border-radius: 50%;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ===== DOCTOR LIST ===== */
+.doctorList {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 24px;
+}
+
+.doctorCard {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 18px;
+    background: white;
+    border: 2px solid rgba(226, 232, 240, 0.8);
+    border-radius: 16px;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    position: relative;
+}
+
+.doctorCard:hover {
+    border-color: #0891b2;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+}
+
+.doctorCardSelected {
+    border-color: #0d9488;
+    background: linear-gradient(135deg, #f0fdfa, #ccfbf1);
+}
+
+.doctorAvatar {
+    font-size: 44px;
+}
+
+.doctorInfo strong {
+    display: block;
+    font-size: 16px;
+    color: #0f172a;
+    margin-bottom: 2px;
+}
+
+.doctorInfo p {
+    font-size: 14px;
+    color: #64748b;
+    margin: 0 0 4px;
+}
+
+.availableBadge {
+    font-size: 12px;
+    color: #16a34a;
+    font-weight: 600;
+}
+
+.doctorCheck {
+    position: absolute;
+    right: 16px;
+    width: 28px;
+    height: 28px;
+    background: #0d9488;
+    color: white;
+    border-radius: 50%;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ===== CONSENT SECTION ===== */
+.consentCard {
+    margin-bottom: 16px;
+}
+
+.privacyNote {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 14px 18px;
+    background: linear-gradient(135deg, #ecfdf5, #d1fae5);
+    border: 1px solid rgba(34, 197, 94, 0.25);
+    border-radius: 12px;
+    color: #15803d;
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 20px;
+}
+
+.privacyIcon {
+    font-size: 16px;
+}
+
+/* ===== SUMMARY CARD ===== */
+.summaryCard {
+    padding: 24px;
+    background: white;
+    border-radius: 18px;
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    margin-bottom: 24px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+}
+
+.summaryRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 0;
+    border-bottom: 1px solid #f1f5f9;
+}
+
+.summaryRow:last-child {
+    border-bottom: none;
+}
+
+.summaryLabel {
+    font-size: 14px;
+    color: #64748b;
+}
+
+.summaryValue {
+    font-size: 15px;
+    font-weight: 600;
+    color: #0f172a;
+}
+
+.shareYes {
+    color: #16a34a;
+}
+
+.shareNo {
+    color: #64748b;
+}
+
+/* ===== STEP ACTIONS ===== */
+.stepActions {
+    display: flex;
+    gap: 12px;
+}
+
+.backButton {
+    flex: 1;
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    border-radius: 14px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #64748b;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.backButton:hover {
+    background: white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.nextButton {
+    flex: 1;
+    padding: 16px;
+    background: linear-gradient(135deg, #0d9488, #0891b2);
+    border: none;
+    border-radius: 14px;
+    font-size: 16px;
+    font-weight: 600;
+    color: white;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba(13, 148, 136, 0.3);
+}
+
+.nextButton:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(13, 148, 136, 0.4);
+}
+
+.nextButton.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.confirmButton {
+    flex: 1;
+    padding: 16px;
+    background: linear-gradient(135deg, #16a34a, #15803d);
+    border: none;
+    border-radius: 14px;
+    font-size: 16px;
+    font-weight: 700;
+    color: white;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 4px 12px rgba(22, 163, 74, 0.3);
+}
+
+.confirmButton:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(22, 163, 74, 0.4);
+}
+
+/* ===== QUEUED CONTENT ===== */
+.queuedContent {
+    text-align: center;
+    animation: fadeIn 0.3s ease;
+}
+
+.successIcon {
+    font-size: 56px;
+    margin-bottom: 16px;
+}
+
+.queuedTitle {
+    font-size: 26px;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0 0 8px;
+}
+
+.queuedSubtitle {
+    font-size: 16px;
+    color: #64748b;
+    margin: 0 0 24px;
+}
+
+.queuedSubtitle strong {
+    color: #0d9488;
+}
+
+.bookedSummary {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    padding: 20px;
+    background: linear-gradient(135deg, #f0fdf4, #ecfdf5);
+    border: 1px solid rgba(34, 197, 94, 0.25);
+    border-radius: 16px;
+    margin-bottom: 20px;
+}
+
+.bookedRow {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 15px;
+    color: #334155;
+}
+
+.bookedIcon {
+    font-size: 20px;
+}
+
+.queueStatus {
+    margin-bottom: 20px;
+}
+
+.waitMessage {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 18px 24px;
+    background: linear-gradient(135deg, #fffbeb, #fef3c7);
+    border: 1px solid rgba(245, 158, 11, 0.25);
+    border-radius: 14px;
+    margin-bottom: 24px;
+}
+
+.waitIcon {
+    font-size: 24px;
+}
+
+.waitMessage p {
+    margin: 0;
+    font-size: 14px;
+    color: #92400e;
+    text-align: left;
+}
+
+.returnButton {
+    display: block;
+    width: 100%;
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.8);
+    border: 1px solid rgba(226, 232, 240, 0.8);
+    border-radius: 14px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #64748b;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.returnButton:hover {
+    background: white;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 480px) {
+    .main {
+        padding: 16px 12px 32px;
+    }
+
+    .title {
+        font-size: 24px;
+    }
+
+    .stepIndicator {
+        padding: 12px;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .stepLabel {
+        display: none;
+    }
+
+    .stepLine {
+        width: 16px;
+    }
+
+    .typeOptions {
+        grid-template-columns: 1fr;
+    }
+
+    .typeCard {
+        padding: 20px 16px;
+    }
+
+    .bookedSummary {
+        flex-direction: column;
+        gap: 12px;
+    }
+}
