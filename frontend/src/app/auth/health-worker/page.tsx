@@ -58,8 +58,8 @@ export default function HealthWorkerLoginPage() {
                 localStorage.setItem('demo_health_worker_years', String(healthWorker.yearsActive));
                 localStorage.setItem('demo_health_worker_patients', String(healthWorker.patientsAssisted));
 
-                // Redirect to health worker assist page
-                router.push('/health-worker/assist');
+                // Redirect to health worker session page (redesigned)
+                router.push('/health-worker/session');
                 return;
             } else {
                 setLoading(false);
