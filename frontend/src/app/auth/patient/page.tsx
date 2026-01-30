@@ -125,7 +125,7 @@ export default function PatientLoginPage() {
                 profileData
             );
 
-            router.push(isAssistedMode ? '/health-worker/assist' : '/patient/dashboard');
+            router.push(isAssistedMode ? '/health-worker/session' : '/patient/dashboard');
         } catch (err: any) {
             console.error('OTP verify error:', err);
             setError(err.message || t('Invalid OTP'));

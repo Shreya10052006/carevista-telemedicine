@@ -183,6 +183,68 @@
 
 ---
 
+## 🏗️ System Architecture
+
+```mermaid
+flowchart TB
+    subgraph Frontend["🌐 Frontend (Next.js 14)"]
+        PP["👤 Patient Portal"]
+        DP["👨‍⚕️ Doctor Portal"]
+        HP["🏪 Health Worker Portal"]
+    end
+
+    subgraph Backend["⚡ Backend (FastAPI)"]
+        API["REST API Gateway"]
+        AUTH["🔐 Auth Service"]
+        SYM["📋 Symptoms Service"]
+        TRIAGE["🚨 Triage Engine"]
+        TRANS["🌐 Translation Service"]
+    end
+
+    subgraph AI["🤖 AI Services"]
+        WHISPER["🎤 Whisper STT"]
+        GROQ["⚡ Groq LLaMA 3"]
+        GEMINI["✨ Google Gemini"]
+    end
+
+    subgraph Data["💾 Data Layer"]
+        FIREBASE["🔥 Firebase"]
+        IDB["📦 IndexedDB"]
+    end
+
+    subgraph External["📡 External"]
+        AGORA["📹 Agora WebRTC"]
+    end
+
+    PP & DP & HP --> API
+    API --> AUTH --> FIREBASE
+    API --> SYM --> WHISPER
+    SYM --> GROQ
+    SYM --> GEMINI
+    API --> TRIAGE
+    API --> TRANS --> GEMINI
+    PP --> AGORA
+    DP --> AGORA
+    PP --> IDB
+    HP --> IDB
+```
+
+### Data Flow
+
+```
+┌─────────────┐     ┌─────────────┐     ┌─────────────┐     ┌─────────────┐
+│   Patient   │────▶│   Voice     │────▶│   Whisper   │────▶│    AI       │
+│   Speech    │     │   Upload    │     │    STT      │     │  Summary    │
+└─────────────┘     └─────────────┘     └─────────────┘     └─────────────┘
+                                                                    │
+                    ┌─────────────┐     ┌─────────────┐             │
+                    │   Doctor    │◀────│   Triage    │◀────────────┘
+                    │   Review    │     │   Queue     │
+                    └─────────────┘     └─────────────┘
+```
+
+---
+
 ## 🚀 Quick Start
 
 ### Prerequisites
@@ -291,7 +353,7 @@ Password: <code>demo123</code>
 <tr>
 <td>🏪 <strong>Health Worker</strong></td>
 <td>
-Worker ID: <code>HW-DEMO-001</code><br/>
+Worker ID: <code>hw_priya</code><br/>
 Password: <code>demo123</code>
 </td>
 <td>Session-based assisted access demo</td>

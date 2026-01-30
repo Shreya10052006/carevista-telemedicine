@@ -69,13 +69,37 @@ export default function HealthWorkerLoginPage() {
         }
 
         // ==================== PRODUCTION LOGIN ====================
-        // In production, this would verify against a backend
+        // Verify credentials against backend API
         try {
-            // TODO: Implement production health worker authentication
-            setError('Production mode not yet implemented');
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'}/api/health-worker/login`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ workerId, password }),
+            });
+
+            if (response.ok) {
+                const data = await response.json();
+
+                // Store health worker session
+                localStorage.setItem('health_worker_id', data.id || workerId);
+                localStorage.setItem('health_worker_name', data.name || workerId);
+                localStorage.setItem('health_worker_token', data.token || '');
+
+                router.push('/health-worker/session');
+            } else {
+                const errorData = await response.json().catch(() => ({}));
+                setError(errorData.detail || 'Invalid credentials. Please check your Worker ID and password.');
+            }
         } catch (err: any) {
             console.error('Login error:', err);
-            setError(err.message || 'Login failed. Please try again.');
+            // If backend is unavailable, show helpful message
+            if (err.message?.includes('fetch')) {
+                setError('Unable to connect to server. Please check your network connection.');
+            } else {
+                setError(err.message || 'Login failed. Please try again.');
+            }
         } finally {
             setLoading(false);
         }

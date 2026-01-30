@@ -62,7 +62,6 @@ export async function classifySymptoms(
         }
 
         const data = await response.json();
-        console.log('[LLM] Classification result:', data);
         return data;
     } catch (error) {
         console.error('[LLM] Classification failed:', error);
@@ -99,7 +98,6 @@ export async function structureIntake(
         }
 
         const data = await response.json();
-        console.log('[LLM] Structure result:', data);
         return data;
     } catch (error) {
         console.error('[LLM] Structuring failed:', error);
@@ -137,7 +135,6 @@ export async function generateSummary(
         }
 
         const data = await response.json();
-        console.log('[LLM] Summary result:', data);
         return data;
     } catch (error) {
         console.error('[LLM] Summary failed:', error);
@@ -173,7 +170,6 @@ export async function translateText(
         }
 
         const data = await response.json();
-        console.log('[LLM] Translation result:', data);
         return data;
     } catch (error) {
         console.error('[LLM] Translation failed:', error);

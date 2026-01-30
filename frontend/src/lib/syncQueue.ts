@@ -53,7 +53,6 @@ export function initSyncService(): void {
 
     // Listen for online status
     window.addEventListener('online', () => {
-        console.log('[Sync] Network available, starting sync...');
         triggerSync();
     });
 
@@ -117,8 +116,6 @@ export async function triggerSync(): Promise<void> {
     currentStatus.errors = [];
     notifyStatusChange();
 
-    console.log('[Sync] Starting synchronization...');
-
     try {
         // Sync recordings
         await syncRecordings();
@@ -130,7 +127,6 @@ export async function triggerSync(): Promise<void> {
         await retryFailedItems();
 
         currentStatus.lastSyncAt = Date.now();
-        console.log('[Sync] Synchronization complete');
     } catch (error) {
         console.error('[Sync] Synchronization failed:', error);
         currentStatus.errors.push(String(error));
@@ -157,7 +153,6 @@ async function syncRecordings(): Promise<void> {
                 recording.consentId
             );
             await markRecordingSynced(recording.id);
-            console.log(`[Sync] Recording ${recording.id} synced`);
         } catch (error) {
             console.warn(`[Sync] Recording ${recording.id} failed:`, error);
             await addToSyncQueue('recording', recording.id);
@@ -180,7 +175,6 @@ async function syncSymptoms(): Promise<void> {
                 symptom.consentId
             );
             await markSymptomSynced(symptom.id);
-            console.log(`[Sync] Symptom ${symptom.id} synced`);
         } catch (error) {
             console.warn(`[Sync] Symptom ${symptom.id} failed:`, error);
             await addToSyncQueue('symptom', symptom.id);
@@ -236,7 +230,6 @@ async function retryFailedItems(): Promise<void> {
 
             // Remove from queue on success
             await removeFromSyncQueue(item.id);
-            console.log(`[Sync] Retry successful for ${item.id}`);
         } catch (error) {
             await updateSyncQueueItem(item.id, String(error));
             console.warn(`[Sync] Retry failed for ${item.id}:`, error);

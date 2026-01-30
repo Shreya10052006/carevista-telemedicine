@@ -71,7 +71,7 @@ export function setupRecaptcha(elementId: string): RecaptchaVerifier {
     return new RecaptchaVerifier(auth, elementId, {
         size: 'invisible',
         callback: () => {
-            console.log('[Auth] reCAPTCHA verified');
+            // reCAPTCHA verified
         },
     });
 }

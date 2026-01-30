@@ -38,6 +38,87 @@ router = APIRouter(prefix="/health-worker", tags=["health-worker"])
 SESSION_TIMEOUT_MINUTES = 30
 
 
+# ==================== LOGIN MODELS ====================
+class LoginRequest(BaseModel):
+    """Health worker login request."""
+    workerId: str
+    password: str
+
+
+class LoginResponse(BaseModel):
+    """Health worker login response."""
+    id: str
+    name: str
+    token: str
+    facility: str
+    message: str
+
+
+@router.post("/login", response_model=LoginResponse)
+async def health_worker_login(request: LoginRequest):
+    """
+    Authenticate a health worker.
+    
+    In production, this validates against a database of registered health workers.
+    For demo mode, the frontend handles validation locally.
+    """
+    db = get_firestore_client()
+    
+    # Query for health worker by worker ID
+    workers = db.collection("health_workers").where(
+        "worker_id", "==", request.workerId
+    ).limit(1).get()
+    
+    worker_doc = None
+    for doc in workers:
+        worker_doc = doc
+        break
+    
+    if not worker_doc:
+        raise HTTPException(
+            status_code=401,
+            detail="Invalid Worker ID or password"
+        )
+    
+    worker = worker_doc.to_dict()
+    
+    # Verify password (in production, use proper password hashing)
+    # For now, simple comparison - should use bcrypt in production
+    stored_password = worker.get("password_hash", worker.get("password", ""))
+    if stored_password != request.password:
+        raise HTTPException(
+            status_code=401,
+            detail="Invalid Worker ID or password"
+        )
+    
+    # Generate session token
+    token = secrets.token_hex(32)
+    
+    # Store session token
+    db.collection("health_worker_sessions").document(token).set({
+        "worker_id": request.workerId,
+        "worker_uid": worker_doc.id,
+        "created_at": datetime.utcnow(),
+        "expires_at": datetime.utcnow() + timedelta(hours=8),
+        "active": True,
+    })
+    
+    # Audit log
+    db.collection("audit_logs").add({
+        "action": "health_worker_login",
+        "worker_id": request.workerId,
+        "timestamp": datetime.utcnow(),
+    })
+    
+    return LoginResponse(
+        id=worker_doc.id,
+        name=worker.get("name", request.workerId),
+        token=token,
+        facility=worker.get("facility", "Unknown Facility"),
+        message="Login successful"
+    )
+
+
 class SessionStartRequest(BaseModel):
     """Request to start an assisted session."""
     patient_uid: Optional[str] = None  # For existing patients

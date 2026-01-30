@@ -91,7 +91,7 @@ export default function SymptomsPage() {
     // Handle consent completion
     const handleConsentComplete = useCallback(
         async (consents: { [key: string]: boolean }) => {
-            console.log('[Symptoms] Consent complete, effectiveUserId:', effectiveUserId, 'demoUserId:', demoUserId);
+            // Process consent completion
 
             // In demo mode, always proceed
             if (DEMO_MODE) {
@@ -105,8 +105,7 @@ export default function SymptomsPage() {
                     if (consents.transcription && effectiveUserId) {
                         await grantConsent('transcription', language);
                     }
-                } catch (error) {
-                    console.log('[Symptoms] Demo consent storage failed (ok):', error);
+                } catch {
                     setConsentId('demo-consent-id');
                 }
                 setPageState('input');
