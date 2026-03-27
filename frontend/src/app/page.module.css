@@ -438,6 +438,140 @@
     box-shadow: 0 8px 25px rgba(249, 115, 22, 0.3);
 }
 
+/* ==================== GOFUNDME SECTION ==================== */
+
+.gofundmeSection {
+    position: relative;
+    z-index: 1;
+    padding: 80px 24px;
+    background: linear-gradient(135deg, #eff6ff 0%, #f0fdfa 40%, #ecfdf5 100%);
+    overflow: hidden;
+}
+
+.gofundmeSection::before {
+    content: '';
+    position: absolute;
+    top: -60px;
+    right: -60px;
+    width: 220px;
+    height: 220px;
+    background: radial-gradient(circle, rgba(13, 148, 136, 0.06) 0%, transparent 70%);
+    border-radius: 50%;
+    pointer-events: none;
+}
+
+.gofundmeContent {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1.1fr;
+    gap: 60px;
+    align-items: center;
+}
+
+.gofundmeLeft {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.gofundmeIllustration {
+    width: 100%;
+    max-width: 360px;
+    height: auto;
+    filter: drop-shadow(0 8px 20px rgba(13, 148, 136, 0.1));
+    animation: float 4s ease-in-out infinite;
+}
+
+.gofundmeRight {
+    max-width: 540px;
+}
+
+.gofundmeBadge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 18px;
+    background: rgba(59, 130, 246, 0.08);
+    border: 1px solid rgba(59, 130, 246, 0.2);
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #2563eb;
+    margin-bottom: 20px;
+}
+
+.gofundmeTitle {
+    font-size: 36px;
+    font-weight: 800;
+    color: #0f172a;
+    line-height: 1.2;
+    margin-bottom: 16px;
+}
+
+.gofundmeTitleAccent {
+    color: #0d9488;
+}
+
+.gofundmeDesc {
+    font-size: 16px;
+    line-height: 1.7;
+    color: #475569;
+    margin-bottom: 28px;
+}
+
+.gofundmeButtons {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.donateNowBtn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 16px 32px;
+    background: linear-gradient(135deg, #0d9488, #14b8a6);
+    color: white;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 14px;
+    text-decoration: none;
+    box-shadow: 0 8px 24px rgba(13, 148, 136, 0.25);
+    transition: all 0.3s;
+}
+
+.donateNowBtn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 32px rgba(13, 148, 136, 0.35);
+    text-decoration: none;
+    color: white;
+}
+
+.requestFundsBtn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 16px 32px;
+    background: white;
+    color: #334155;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 14px;
+    text-decoration: none;
+    border: 2px solid #e2e8f0;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+    transition: all 0.3s;
+}
+
+.requestFundsBtn:hover {
+    border-color: #0d9488;
+    color: #0d9488;
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(13, 148, 136, 0.12);
+    text-decoration: none;
+}
+
 /* ==================== CONSENT SECTION ==================== */
 
 .consentSection {
@@ -581,6 +715,23 @@
     .consentGrid {
         grid-template-columns: 1fr;
     }
+
+    .gofundmeContent {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
+    .gofundmeRight {
+        max-width: 100%;
+    }
+
+    .gofundmeButtons {
+        justify-content: center;
+    }
+
+    .gofundmeIllustration {
+        max-width: 280px;
+    }
 }
 
 @media (max-width: 640px) {
@@ -605,5 +756,13 @@
     .footerLinks {
         flex-wrap: wrap;
         gap: 16px;
+    }
+
+    .gofundmeTitle {
+        font-size: 26px;
+    }
+
+    .gofundmeDesc {
+        font-size: 15px;
     }
 }

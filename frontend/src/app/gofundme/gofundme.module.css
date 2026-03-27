@@ -1,0 +1,818 @@
+/* GoFundMe Page Styles */
+
+/* ==================== BASE ==================== */
+
+.main {
+    min-height: 100vh;
+    position: relative;
+    background: linear-gradient(180deg, #f0fdfa 0%, #ffffff 30%, #f8fafc 100%);
+}
+
+.bgPattern {
+    position: fixed;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(13, 148, 136, 0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(13, 148, 136, 0.025) 1px, transparent 1px);
+    background-size: 40px 40px;
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* ==================== HEADER ==================== */
+
+.header {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(13, 148, 136, 0.1);
+}
+
+.headerInner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.backLink {
+    font-size: 15px;
+    font-weight: 500;
+    color: #0d9488;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.backLink:hover {
+    color: #0f766e;
+    text-decoration: none;
+}
+
+.headerTitle {
+    font-size: 18px;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+/* ==================== HERO ==================== */
+
+.hero {
+    position: relative;
+    z-index: 1;
+    padding: 60px 24px 40px;
+    text-align: center;
+}
+
+.heroInner {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.heroBadge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 20px;
+    background: rgba(59, 130, 246, 0.08);
+    border: 1px solid rgba(59, 130, 246, 0.18);
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #2563eb;
+    margin-bottom: 20px;
+}
+
+.heroTitle {
+    font-size: 44px;
+    font-weight: 800;
+    color: #0f172a;
+    line-height: 1.15;
+    margin-bottom: 14px;
+    letter-spacing: -0.5px;
+}
+
+.heroAccent {
+    color: #0d9488;
+}
+
+.heroSub {
+    font-size: 17px;
+    line-height: 1.6;
+    color: #475569;
+    max-width: 600px;
+    margin: 0 auto 32px;
+}
+
+/* Stats Row */
+.statsRow {
+    display: flex;
+    justify-content: center;
+    gap: 24px;
+    flex-wrap: wrap;
+}
+
+.statCard {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 18px 28px;
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 16px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.04);
+    min-width: 170px;
+}
+
+.statIcon {
+    font-size: 28px;
+}
+
+.statValue {
+    font-size: 22px;
+    font-weight: 800;
+    color: #0f172a;
+    line-height: 1.2;
+}
+
+.statLabel {
+    font-size: 13px;
+    color: #64748b;
+    font-weight: 500;
+}
+
+/* ==================== TABS ==================== */
+
+.tabContainer {
+    position: relative;
+    z-index: 1;
+    padding: 0 24px;
+}
+
+.tabRow {
+    max-width: 600px;
+    margin: 0 auto;
+    display: flex;
+    gap: 0;
+    background: #f1f5f9;
+    border-radius: 14px;
+    padding: 5px;
+}
+
+.tab {
+    flex: 1;
+    padding: 14px 20px;
+    border: none;
+    background: transparent;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    color: #64748b;
+    cursor: pointer;
+    transition: all 0.25s;
+    min-height: auto;
+    min-width: auto;
+}
+
+.tab:hover {
+    color: #334155;
+}
+
+.tabActive {
+    background: white;
+    color: #0d9488;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* ==================== CONTENT ==================== */
+
+.content {
+    position: relative;
+    z-index: 1;
+    padding: 40px 24px 80px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* ==================== PATIENT SECTION ==================== */
+
+.filterRow {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 32px;
+    flex-wrap: wrap;
+}
+
+.filterChip {
+    padding: 10px 20px;
+    border: 2px solid #e2e8f0;
+    background: white;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #475569;
+    cursor: pointer;
+    transition: all 0.2s;
+    min-height: auto;
+    min-width: auto;
+}
+
+.filterChip:hover {
+    border-color: #0d9488;
+    color: #0d9488;
+}
+
+.filterActive {
+    background: #0d9488;
+    color: white;
+    border-color: #0d9488;
+}
+
+.filterActive:hover {
+    background: #0f766e;
+    color: white;
+    border-color: #0f766e;
+}
+
+/* Card Grid */
+.cardGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 28px;
+}
+
+/* Patient Card */
+.patientCard {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 20px;
+    padding: 28px;
+    position: relative;
+    transition: all 0.3s;
+    animation: fadeSlideUp 0.5s ease both;
+}
+
+.patientCard:nth-child(1) {
+    animation-delay: 0s;
+}
+
+.patientCard:nth-child(2) {
+    animation-delay: 0.1s;
+}
+
+.patientCard:nth-child(3) {
+    animation-delay: 0.2s;
+}
+
+.patientCard:nth-child(4) {
+    animation-delay: 0.3s;
+}
+
+@keyframes fadeSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.patientCard:hover {
+    border-color: #99f6e4;
+    box-shadow: 0 12px 36px rgba(13, 148, 136, 0.1);
+    transform: translateY(-4px);
+}
+
+.verifiedBadge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #059669;
+    background: #ecfdf5;
+    padding: 4px 12px;
+    border-radius: 50px;
+    margin-bottom: 14px;
+}
+
+.categoryTag {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 4px 12px;
+    border-radius: 6px;
+    margin-left: 8px;
+}
+
+.tagEmergency {
+    background: #fef2f2;
+    color: #dc2626;
+}
+
+.tagSurgery {
+    background: #eff6ff;
+    color: #2563eb;
+}
+
+.tagChronic {
+    background: #fefce8;
+    color: #ca8a04;
+}
+
+.patientHeader {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin: 16px 0;
+}
+
+.patientAvatar {
+    width: 50px;
+    height: 50px;
+    border-radius: 14px;
+    background: linear-gradient(135deg, #ccfbf1, #e0f2fe);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 22px;
+    font-weight: 700;
+    color: #0d9488;
+    flex-shrink: 0;
+}
+
+.patientName {
+    font-size: 18px;
+    font-weight: 700;
+    color: #0f172a;
+    margin: 0;
+}
+
+.patientMeta {
+    font-size: 13px;
+    color: #64748b;
+    margin: 2px 0 0;
+}
+
+.conditionText {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 15px;
+    color: #334155;
+    padding: 12px 16px;
+    background: #f8fafc;
+    border-radius: 12px;
+    margin-bottom: 16px;
+}
+
+.conditionIcon {
+    font-size: 18px;
+}
+
+.amountRow {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 14px;
+}
+
+.amountLabel {
+    font-size: 12px;
+    color: #94a3b8;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 2px;
+}
+
+.amountValue {
+    font-size: 18px;
+    font-weight: 700;
+    color: #0f172a;
+}
+
+.amountValueGreen {
+    font-size: 18px;
+    font-weight: 700;
+    color: #059669;
+}
+
+/* Progress Bar */
+.progressWrapper {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.progressTrack {
+    flex: 1;
+    height: 10px;
+    background: #f1f5f9;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.progressFill {
+    height: 100%;
+    background: linear-gradient(90deg, #14b8a6, #0d9488);
+    border-radius: 10px;
+    transition: width 1.2s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    animation: progressGrow 1.5s ease both;
+}
+
+@keyframes progressGrow {
+    from {
+        width: 0 !important;
+    }
+}
+
+.progressPct {
+    font-size: 14px;
+    font-weight: 700;
+    color: #0d9488;
+    min-width: 40px;
+    text-align: right;
+}
+
+.cardDonateBtn {
+    width: 100%;
+    padding: 14px;
+    background: linear-gradient(135deg, #0d9488, #14b8a6);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s;
+    min-height: auto;
+}
+
+.cardDonateBtn:hover {
+    box-shadow: 0 8px 24px rgba(13, 148, 136, 0.3);
+    transform: translateY(-2px);
+}
+
+/* ==================== DONATE SECTION ==================== */
+
+.donateSection {
+    max-width: 560px;
+    margin: 0 auto;
+    animation: fadeSlideUp 0.4s ease both;
+}
+
+.donateCard {
+    background: white;
+    border: 1px solid #e2e8f0;
+    border-radius: 24px;
+    padding: 40px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
+}
+
+.donateHeader {
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.donateIcon {
+    font-size: 44px;
+    margin-bottom: 12px;
+    display: block;
+}
+
+.donateTitle {
+    font-size: 28px;
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 8px;
+}
+
+.donateSub {
+    font-size: 15px;
+    color: #64748b;
+    line-height: 1.6;
+}
+
+.donateForm {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.formGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.formLabel {
+    font-size: 14px;
+    font-weight: 600;
+    color: #334155;
+}
+
+.optional {
+    font-weight: 400;
+    color: #94a3b8;
+}
+
+.formInput,
+.formSelect {
+    padding: 14px 18px;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 16px;
+    color: #0f172a;
+    background: #fafbfc;
+    transition: all 0.2s;
+    outline: none;
+    width: 100%;
+    font-family: inherit;
+}
+
+.formInput:focus,
+.formSelect:focus {
+    border-color: #0d9488;
+    box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.1);
+    background: white;
+}
+
+.formTextarea {
+    padding: 14px 18px;
+    border: 2px solid #e2e8f0;
+    border-radius: 12px;
+    font-size: 16px;
+    color: #0f172a;
+    background: #fafbfc;
+    transition: all 0.2s;
+    outline: none;
+    width: 100%;
+    font-family: inherit;
+    resize: vertical;
+    min-height: 80px;
+}
+
+.formTextarea:focus {
+    border-color: #0d9488;
+    box-shadow: 0 0 0 3px rgba(13, 148, 136, 0.1);
+    background: white;
+}
+
+/* Quick Amount Chips */
+.quickAmounts {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 4px;
+}
+
+.quickChip {
+    padding: 8px 18px;
+    border: 2px solid #e2e8f0;
+    background: white;
+    border-radius: 50px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #475569;
+    cursor: pointer;
+    transition: all 0.2s;
+    min-height: auto;
+    min-width: auto;
+}
+
+.quickChip:hover {
+    border-color: #0d9488;
+    color: #0d9488;
+    background: #f0fdfa;
+}
+
+/* Toggle Buttons */
+.toggleRow {
+    display: flex;
+    gap: 0;
+    background: #f1f5f9;
+    border-radius: 12px;
+    padding: 4px;
+}
+
+.toggleBtn {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    background: transparent;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #64748b;
+    cursor: pointer;
+    transition: all 0.2s;
+    min-height: auto;
+    min-width: auto;
+}
+
+.toggleActive {
+    background: white;
+    color: #0d9488;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+}
+
+.submitDonateBtn {
+    padding: 18px;
+    background: linear-gradient(135deg, #0d9488, #14b8a6);
+    color: white;
+    border: none;
+    border-radius: 14px;
+    font-size: 17px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: 0 8px 24px rgba(13, 148, 136, 0.25);
+    min-height: auto;
+}
+
+.submitDonateBtn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 32px rgba(13, 148, 136, 0.35);
+}
+
+/* ==================== SUCCESS MODAL ==================== */
+
+.modalOverlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.5);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    animation: fadeIn 0.3s ease;
+    padding: 24px;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.modalCard {
+    background: white;
+    border-radius: 24px;
+    padding: 48px 40px;
+    text-align: center;
+    max-width: 420px;
+    width: 100%;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.15);
+    animation: modalPop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+@keyframes modalPop {
+    from {
+        opacity: 0;
+        transform: scale(0.85) translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.modalCheckmark {
+    width: 72px;
+    height: 72px;
+    margin: 0 auto 24px;
+}
+
+.checkmarkSvg {
+    width: 100%;
+    height: 100%;
+}
+
+.checkmarkCircle {
+    stroke-dasharray: 166;
+    stroke-dashoffset: 166;
+    animation: circleStroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) 0.1s forwards;
+}
+
+@keyframes circleStroke {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+.checkmarkPath {
+    stroke-dasharray: 48;
+    stroke-dashoffset: 48;
+    animation: checkStroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.6s forwards;
+}
+
+@keyframes checkStroke {
+    to {
+        stroke-dashoffset: 0;
+    }
+}
+
+.modalTitle {
+    font-size: 26px;
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 10px;
+}
+
+.modalText {
+    font-size: 16px;
+    color: #475569;
+    line-height: 1.6;
+    margin-bottom: 28px;
+}
+
+.modalClose {
+    padding: 14px 36px;
+    background: linear-gradient(135deg, #0d9488, #14b8a6);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    min-height: auto;
+}
+
+.modalClose:hover {
+    box-shadow: 0 6px 20px rgba(13, 148, 136, 0.3);
+}
+
+/* ==================== RESPONSIVE ==================== */
+
+@media (max-width: 768px) {
+    .heroTitle {
+        font-size: 32px;
+    }
+
+    .statsRow {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .statCard {
+        width: 100%;
+        max-width: 320px;
+    }
+
+    .tabRow {
+        flex-direction: column;
+    }
+
+    .cardGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .donateCard {
+        padding: 28px 20px;
+    }
+
+    .filterRow {
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        padding-bottom: 8px;
+    }
+
+    .filterChip {
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .heroTitle {
+        font-size: 26px;
+    }
+
+    .heroSub {
+        font-size: 15px;
+    }
+
+    .patientCard {
+        padding: 20px;
+    }
+
+    .quickAmounts {
+        justify-content: center;
+    }
+}

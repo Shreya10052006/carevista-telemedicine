@@ -1238,6 +1238,9 @@
 .modal {
     width: 100%;
     max-width: 560px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-sizing: border-box;
     background: white;
     border-radius: 16px;
     padding: 32px;
@@ -1463,6 +1466,182 @@
     .rulesPanel {
         flex: 1;
     }
+}
+
+/* ==================== CONSENT SCREEN ==================== */
+.consentText {
+    margin-bottom: 24px;
+}
+
+.consentText h4 {
+    font-size: 15px;
+    font-weight: 700;
+    color: #1e293b;
+    margin-bottom: 12px;
+}
+
+.consentBox {
+    background: #f0fdf4;
+    border: 2px solid #86efac;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 16px;
+    font-size: 15px;
+    line-height: 1.7;
+    color: #1e293b;
+}
+
+.consentBox p {
+    margin-bottom: 12px;
+}
+
+.consentBox p:last-child {
+    margin-bottom: 0;
+    font-weight: 600;
+}
+
+.readAloudBtn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    color: white;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.readAloudBtn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+}
+
+.consentConfirmation {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-bottom: 24px;
+    padding: 20px;
+    background: #f8fafc;
+    border-radius: 12px;
+    border: 1px solid #e2e8f0;
+}
+
+.consentCheck {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #334155;
+    line-height: 1.5;
+}
+
+.consentCheck input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    margin-top: 2px;
+    accent-color: #0d9488;
+    flex-shrink: 0;
+}
+
+.patientCheck {
+    background: #fefce8;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #fde68a;
+}
+
+.patientCheck span {
+    font-weight: 600;
+    color: #92400e;
+}
+
+/* ==================== VOICE CONSENT RECORDING ==================== */
+.voiceConsentArea {
+    margin-bottom: 24px;
+    padding: 20px;
+    background: #faf5ff;
+    border-radius: 12px;
+    border: 1px solid #e9d5ff;
+}
+
+.voiceConsentLabel {
+    font-size: 13px;
+    color: #6b21a8;
+    font-weight: 600;
+    margin-bottom: 14px;
+}
+
+.voiceConsentBtn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 24px;
+    background: linear-gradient(135deg, #7c3aed, #6d28d9);
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    color: white;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.voiceConsentBtn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(124, 58, 237, 0.4);
+}
+
+.voiceConsentBtn.recording {
+    background: linear-gradient(135deg, #dc2626, #b91c1c);
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+
+    0%,
+    100% {
+        box-shadow: 0 0 0 0 rgba(220, 38, 38, 0.4);
+    }
+
+    50% {
+        box-shadow: 0 0 0 10px rgba(220, 38, 38, 0);
+    }
+}
+
+.voiceConsentPlayback {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.voiceConsentStatus {
+    font-size: 14px;
+    font-weight: 600;
+    color: #16a34a;
+}
+
+.audioPlayer {
+    width: 100%;
+    max-width: 400px;
+    height: 40px;
+    border-radius: 8px;
+}
+
+.voiceConsentActions {
+    display: flex;
+    gap: 12px;
+}
+
+.voiceConsentAttached {
+    font-size: 13px;
+    color: #16a34a;
+    font-weight: 600;
 }
 
 @media (max-width: 768px) {

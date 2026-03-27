@@ -40,6 +40,20 @@ type ActionScreen = 'dashboard' | 'symptoms' | 'upload' | 'consent' | 'consult';
 // Demo mode check
 const DEMO_MODE = process.env.NEXT_PUBLIC_DEMO_MODE === 'true';
 
+// Locale map for Speech Synthesis
+const LOCALE_MAP: Record<string, string> = {
+    en: 'en-IN',
+    hi: 'hi-IN',
+    ta: 'ta-IN',
+};
+
+// Consent text by language (keyed by translation keys)
+const CONSENT_TEXT_KEYS = {
+    para1_en: "Your health information will be shared with the doctor to help them understand your condition and provide treatment. This includes symptoms you've described and any documents you've uploaded.",
+    para2_en: "You can withdraw your consent at any time. The doctor and health worker cannot access your information after the consultation ends without your permission.",
+    para3_en: 'Do you understand and agree to share your health information?"',
+};
+
 export default function HealthWorkerPortal() {
     const router = useRouter();
     const { language: uiLanguage, setLanguage: setUILanguage, t } = useLanguage();
@@ -67,6 +81,16 @@ export default function HealthWorkerPortal() {
     const [consultationType, setConsultationType] = useState<'audio' | 'video'>('audio');
     const [waitingForDoctor, setWaitingForDoctor] = useState(false);
 
+    // Read Aloud state
+    const [isReadingAloud, setIsReadingAloud] = useState(false);
+
+    // Voice Consent Recording state
+    const [isRecordingConsent, setIsRecordingConsent] = useState(false);
+    const [consentAudioBlob, setConsentAudioBlob] = useState<Blob | null>(null);
+    const [consentAudioUrl, setConsentAudioUrl] = useState<string | null>(null);
+    const mediaRecorderRef = useRef<MediaRecorder | null>(null);
+    const audioChunksRef = useRef<Blob[]>([]);
+
     // Messages
     const [successMessage, setSuccessMessage] = useState<string | null>(null);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -78,8 +102,24 @@ export default function HealthWorkerPortal() {
         setMounted(true);
         return () => {
             if (timerRef.current) clearInterval(timerRef.current);
+            // Cleanup speech synthesis on unmount
+            if (typeof window !== 'undefined' && window.speechSynthesis) {
+                window.speechSynthesis.cancel();
+            }
+            // Cleanup audio URL
+            if (consentAudioUrl) {
+                URL.revokeObjectURL(consentAudioUrl);
+            }
         };
     }, []);
+
+    // Cancel speech when language changes
+    useEffect(() => {
+        if (typeof window !== 'undefined' && window.speechSynthesis) {
+            window.speechSynthesis.cancel();
+            setIsReadingAloud(false);
+        }
+    }, [uiLanguage]);
 
     // Session timer countdown
     useEffect(() => {
@@ -105,17 +145,17 @@ export default function HealthWorkerPortal() {
     const handleSessionTimeout = () => {
         setSession(null);
         setActiveScreen('dashboard');
-        setErrorMessage('Session expired. All access has been revoked.');
+        setErrorMessage(t('Session expired. All access has been revoked.'));
     };
 
     const startSession = () => {
         if (!presenceConfirmed || !roleUnderstood) {
-            setErrorMessage('Please confirm all requirements before starting.');
+            setErrorMessage(t('Please confirm all requirements before starting.'));
             return;
         }
 
         if (!patientId.trim() && !patientName.trim()) {
-            setErrorMessage('Please enter Patient ID or Name.');
+            setErrorMessage(t('Please enter Patient ID or Name.'));
             return;
         }
 
@@ -134,7 +174,7 @@ export default function HealthWorkerPortal() {
         });
 
         setShowStartModal(false);
-        setSuccessMessage('Session started. Patient must remain present for all actions.');
+        setSuccessMessage(t('Session started. Patient must remain present for all actions.'));
         resetForm();
     };
 
@@ -142,7 +182,7 @@ export default function HealthWorkerPortal() {
         setSession(null);
         setActiveScreen('dashboard');
         setShowEndConfirm(false);
-        setSuccessMessage('Session ended. All access has been revoked.');
+        setSuccessMessage(t('Session ended. All access has been revoked.'));
         resetActionStates();
     };
 
@@ -161,12 +201,18 @@ export default function HealthWorkerPortal() {
         setConsentExplained(false);
         setPatientConfirmedConsent(false);
         setWaitingForDoctor(false);
+        // Reset voice consent
+        setConsentAudioBlob(null);
+        if (consentAudioUrl) {
+            URL.revokeObjectURL(consentAudioUrl);
+            setConsentAudioUrl(null);
+        }
     };
 
     const handleSaveSymptoms = () => {
         if (!symptomText.trim()) return;
         // In production, this would call the API
-        setSuccessMessage('Symptoms saved to patient logbook.');
+        setSuccessMessage(t('Symptoms saved to patient logbook.'));
         setSymptomText('');
         setTimeout(() => setActiveScreen('dashboard'), 1500);
     };
@@ -182,7 +228,7 @@ export default function HealthWorkerPortal() {
                 if (prev === null || prev >= 100) {
                     clearInterval(interval);
                     setUploadSuccess(true);
-                    setSuccessMessage('Document uploaded successfully.');
+                    setSuccessMessage(t('Document uploaded successfully.'));
                     return 100;
                 }
                 return prev + 20;
@@ -192,7 +238,8 @@ export default function HealthWorkerPortal() {
 
     const handleInitiateConsultation = () => {
         setWaitingForDoctor(true);
-        setSuccessMessage(`${consultationType === 'video' ? 'Video' : 'Audio'} consultation initiated. Waiting for doctor...`);
+        const type = consultationType === 'video' ? t('Video') : t('Audio');
+        setSuccessMessage(`${type} ${t('consultation initiated. Waiting for doctor...')}`);
     };
 
     const clearMessages = () => {
@@ -200,13 +247,97 @@ export default function HealthWorkerPortal() {
         setErrorMessage(null);
     };
 
+    // ==================== Read Aloud ====================
+    const getConsentFullText = (): string => {
+        const p1 = t('consent_para_1');
+        const p2 = t('consent_para_2');
+        const p3 = t('consent_para_3');
+        // If translations return the keys themselves (English), use the original text
+        const para1 = p1 === 'consent_para_1'
+            ? CONSENT_TEXT_KEYS.para1_en
+            : p1;
+        const para2 = p2 === 'consent_para_2'
+            ? CONSENT_TEXT_KEYS.para2_en
+            : p2;
+        const para3 = p3 === 'consent_para_3'
+            ? CONSENT_TEXT_KEYS.para3_en
+            : p3;
+        return `${para1} ${para2} ${para3}`;
+    };
+
+    const handleReadAloud = () => {
+        if (!window.speechSynthesis) return;
+
+        if (isReadingAloud) {
+            window.speechSynthesis.cancel();
+            setIsReadingAloud(false);
+            return;
+        }
+
+        const text = getConsentFullText();
+        const utterance = new SpeechSynthesisUtterance(text);
+        utterance.lang = LOCALE_MAP[uiLanguage] || 'en-IN';
+        utterance.rate = 0.9;
+        utterance.onend = () => setIsReadingAloud(false);
+        utterance.onerror = () => setIsReadingAloud(false);
+
+        window.speechSynthesis.cancel(); // Clear any pending
+        window.speechSynthesis.speak(utterance);
+        setIsReadingAloud(true);
+    };
+
+    // ==================== Voice Consent Recording ====================
+    const startConsentRecording = async () => {
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            const mediaRecorder = new MediaRecorder(stream);
+            mediaRecorderRef.current = mediaRecorder;
+            audioChunksRef.current = [];
+
+            mediaRecorder.ondataavailable = (e) => {
+                if (e.data.size > 0) {
+                    audioChunksRef.current.push(e.data);
+                }
+            };
+
+            mediaRecorder.onstop = () => {
+                const blob = new Blob(audioChunksRef.current, { type: 'audio/webm' });
+                setConsentAudioBlob(blob);
+                const url = URL.createObjectURL(blob);
+                setConsentAudioUrl(url);
+                // Stop all tracks
+                stream.getTracks().forEach(track => track.stop());
+            };
+
+            mediaRecorder.start();
+            setIsRecordingConsent(true);
+        } catch {
+            setErrorMessage('Microphone access denied. Please allow microphone access.');
+        }
+    };
+
+    const stopConsentRecording = () => {
+        if (mediaRecorderRef.current && mediaRecorderRef.current.state !== 'inactive') {
+            mediaRecorderRef.current.stop();
+        }
+        setIsRecordingConsent(false);
+    };
+
+    const resetConsentRecording = () => {
+        if (consentAudioUrl) {
+            URL.revokeObjectURL(consentAudioUrl);
+        }
+        setConsentAudioBlob(null);
+        setConsentAudioUrl(null);
+    };
+
     // Render functions
     const renderDashboard = () => (
         <div className={styles.dashboard}>
             {/* Left Column - Action Cards */}
             <div className={styles.leftColumn}>
-                <h2 className={styles.columnTitle}>Allowed Actions</h2>
-                <p className={styles.columnSubtitle}>Patient must be present for all actions</p>
+                <h2 className={styles.columnTitle}>{t('Allowed Actions')}</h2>
+                <p className={styles.columnSubtitle}>{t('Patient must be present for all actions')}</p>
 
                 <div className={styles.actionCards}>
                     {/* Assisted Symptom Logging */}
@@ -217,9 +348,9 @@ export default function HealthWorkerPortal() {
                     >
                         <div className={styles.actionIcon}>📝</div>
                         <div className={styles.actionContent}>
-                            <h3>Assisted Symptom Logging</h3>
-                            <p>Record symptoms as patient describes them</p>
-                            <span className={styles.actionNote}>Voice-first • Multi-language</span>
+                            <h3>{t('Assisted Symptom Logging')}</h3>
+                            <p>{t('Record symptoms as patient describes them')}</p>
+                            <span className={styles.actionNote}>{t('Voice-first • Multi-language')}</span>
                         </div>
                         <div className={styles.actionArrow}>→</div>
                     </button>
@@ -232,9 +363,9 @@ export default function HealthWorkerPortal() {
                     >
                         <div className={styles.actionIcon}>📄</div>
                         <div className={styles.actionContent}>
-                            <h3>Document Upload</h3>
-                            <p>Upload medical reports and prescriptions</p>
-                            <span className={styles.actionNote}>Camera • File upload</span>
+                            <h3>{t('Document Upload')}</h3>
+                            <p>{t('Upload medical reports and prescriptions')}</p>
+                            <span className={styles.actionNote}>{t('Camera • File upload')}</span>
                         </div>
                         <div className={styles.actionArrow}>→</div>
                     </button>
@@ -247,9 +378,9 @@ export default function HealthWorkerPortal() {
                     >
                         <div className={styles.actionIcon}>✓</div>
                         <div className={styles.actionContent}>
-                            <h3>Consent Explanation</h3>
-                            <p>Explain consent and help patient confirm</p>
-                            <span className={styles.actionNote}>Read-aloud • Patient confirms</span>
+                            <h3>{t('Consent Explanation')}</h3>
+                            <p>{t('Explain consent and help patient confirm')}</p>
+                            <span className={styles.actionNote}>{t('Read-aloud • Patient confirms')}</span>
                         </div>
                         <div className={styles.actionArrow}>→</div>
                     </button>
@@ -262,9 +393,9 @@ export default function HealthWorkerPortal() {
                     >
                         <div className={styles.actionIcon}>📞</div>
                         <div className={styles.actionContent}>
-                            <h3>Initiate Consultation</h3>
-                            <p>Start audio or video call with doctor</p>
-                            <span className={styles.actionNote}>Audio • Video options</span>
+                            <h3>{t('Initiate Consultation')}</h3>
+                            <p>{t('Start audio or video call with doctor')}</p>
+                            <span className={styles.actionNote}>{t('Audio • Video options')}</span>
                         </div>
                         <div className={styles.actionArrow}>→</div>
                     </button>
@@ -274,7 +405,7 @@ export default function HealthWorkerPortal() {
                     <div className={styles.noSessionOverlay}>
                         <div className={styles.noSessionContent}>
                             <span className={styles.lockIcon}>🔒</span>
-                            <p>Start a session to enable actions</p>
+                            <p>{t('Start a session to enable actions')}</p>
                         </div>
                     </div>
                 )}
@@ -284,29 +415,29 @@ export default function HealthWorkerPortal() {
             <div className={styles.rightColumn}>
                 {/* Restrictions Panel - ALWAYS VISIBLE */}
                 <div className={styles.restrictionsPanel}>
-                    <h3 className={styles.restrictionsTitle}>🔒 You CANNOT Do These</h3>
+                    <h3 className={styles.restrictionsTitle}>{t('🔒 You CANNOT Do These')}</h3>
                     <ul className={styles.restrictionsList}>
-                        <li><span className={styles.restrictIcon}>🔒</span> View AI intake summaries</li>
-                        <li><span className={styles.restrictIcon}>🔒</span> View triage priority</li>
-                        <li><span className={styles.restrictIcon}>🔒</span> View doctor notes</li>
-                        <li><span className={styles.restrictIcon}>🔒</span> View prescriptions</li>
-                        <li><span className={styles.restrictIcon}>🔒</span> Access patient data after session</li>
-                        <li><span className={styles.restrictIcon}>🔒</span> Provide medical advice</li>
+                        <li><span className={styles.restrictIcon}>🔒</span> {t('View AI intake summaries')}</li>
+                        <li><span className={styles.restrictIcon}>🔒</span> {t('View triage priority')}</li>
+                        <li><span className={styles.restrictIcon}>🔒</span> {t('View doctor notes')}</li>
+                        <li><span className={styles.restrictIcon}>🔒</span> {t('View prescriptions')}</li>
+                        <li><span className={styles.restrictIcon}>🔒</span> {t('Access patient data after session')}</li>
+                        <li><span className={styles.restrictIcon}>🔒</span> {t('Provide medical advice')}</li>
                     </ul>
                     <p className={styles.restrictionsNote}>
-                        🛡️ These restrictions protect patient privacy and ensure clinical decisions remain with qualified doctors.
+                        🛡️ {t('These restrictions protect patient privacy and ensure clinical decisions remain with qualified doctors.')}
                     </p>
                 </div>
 
                 {/* Session Rules Panel */}
                 <div className={styles.rulesPanel}>
-                    <h3 className={styles.rulesTitle}>📋 Session Rules</h3>
+                    <h3 className={styles.rulesTitle}>{t('📋 Session Rules')}</h3>
                     <ul className={styles.rulesList}>
-                        <li><span className={styles.ruleIcon}>⏱️</span> Sessions are time-limited (30 min)</li>
-                        <li><span className={styles.ruleIcon}>👤</span> Patient presence is mandatory</li>
-                        <li><span className={styles.ruleIcon}>📊</span> All actions are logged</li>
-                        <li><span className={styles.ruleIcon}>🏷️</span> All uploads are patient-tagged</li>
-                        <li><span className={styles.ruleIcon}>🔐</span> Access revoked when session ends</li>
+                        <li><span className={styles.ruleIcon}>⏱️</span> {t('Sessions are time-limited (30 min)')}</li>
+                        <li><span className={styles.ruleIcon}>👤</span> {t('Patient presence is mandatory')}</li>
+                        <li><span className={styles.ruleIcon}>📊</span> {t('All actions are logged')}</li>
+                        <li><span className={styles.ruleIcon}>🏷️</span> {t('All uploads are patient-tagged')}</li>
+                        <li><span className={styles.ruleIcon}>🔐</span> {t('Access revoked when session ends')}</li>
                     </ul>
                 </div>
             </div>
@@ -316,22 +447,22 @@ export default function HealthWorkerPortal() {
     const renderSymptomsScreen = () => (
         <div className={styles.actionScreen}>
             <button className={styles.backButton} onClick={() => setActiveScreen('dashboard')}>
-                ← Back to Dashboard
+                {t('← Back to Dashboard')}
             </button>
 
             <div className={styles.screenCard}>
                 <div className={styles.screenHeader}>
                     <span className={styles.screenIcon}>📝</span>
-                    <h2>Assisted Symptom Logging</h2>
+                    <h2>{t('Assisted Symptom Logging')}</h2>
                 </div>
 
                 <div className={styles.roleReminder}>
                     <span>⚕️</span>
-                    You are recording what the patient says. Do not interpret or diagnose.
+                    {t('You are recording what the patient says. Do not interpret or diagnose.')}
                 </div>
 
                 <div className={styles.languageSelector}>
-                    <label>Patient's Language:</label>
+                    <label>{t("Patient's Language:")}</label>
                     <select value={session?.language || 'en'} disabled>
                         <option value="en">English</option>
                         <option value="hi">Hindi</option>
@@ -348,15 +479,15 @@ export default function HealthWorkerPortal() {
                     <button className={styles.micButton}>
                         🎤
                     </button>
-                    <p className={styles.micHint}>Tap to use voice input</p>
+                    <p className={styles.micHint}>{t('Tap to use voice input')}</p>
                 </div>
 
                 <div className={styles.textInputArea}>
-                    <label>Or type symptoms as patient describes:</label>
+                    <label>{t('Or type symptoms as patient describes:')}</label>
                     <textarea
                         value={symptomText}
                         onChange={(e) => setSymptomText(e.target.value)}
-                        placeholder="Patient says: 'I have had a headache for 3 days...'"
+                        placeholder={uiLanguage === 'en' ? "Patient says: 'I have had a headache for 3 days...'" : uiLanguage === 'hi' ? "मरीज कहता है: 'मुझे 3 दिनों से सिरदर्द है...'" : "நோயாளி சொல்கிறார்: 'எனக்கு 3 நாட்களாக தலைவலி...'"}
                         rows={6}
                     />
                 </div>
@@ -366,11 +497,11 @@ export default function HealthWorkerPortal() {
                     onClick={handleSaveSymptoms}
                     disabled={!symptomText.trim()}
                 >
-                    Save to Patient Logbook
+                    {t('Save to Patient Logbook')}
                 </button>
 
                 <p className={styles.screenNote}>
-                    ℹ️ Symptoms are saved directly to patient's logbook. You will NOT see previous entries.
+                    ℹ️ {t("Symptoms are saved directly to patient's logbook. You will NOT see previous entries.")}
                 </p>
             </div>
         </div>
@@ -379,18 +510,18 @@ export default function HealthWorkerPortal() {
     const renderUploadScreen = () => (
         <div className={styles.actionScreen}>
             <button className={styles.backButton} onClick={() => setActiveScreen('dashboard')}>
-                ← Back to Dashboard
+                {t('← Back to Dashboard')}
             </button>
 
             <div className={styles.screenCard}>
                 <div className={styles.screenHeader}>
                     <span className={styles.screenIcon}>📄</span>
-                    <h2>Document Upload</h2>
+                    <h2>{t('Document Upload')}</h2>
                 </div>
 
                 <div className={styles.roleReminder}>
                     <span>⚕️</span>
-                    Upload documents for the patient. You will NOT see document contents or history.
+                    {t('Upload documents for the patient. You will NOT see document contents or history.')}
                 </div>
 
                 <div className={styles.uploadArea}>
@@ -399,7 +530,7 @@ export default function HealthWorkerPortal() {
                             <div className={styles.uploadButtons}>
                                 <label className={styles.uploadButton}>
                                     <span>📷</span>
-                                    <span>Camera</span>
+                                    <span>{t('Camera')}</span>
                                     <input
                                         type="file"
                                         accept="image/*"
@@ -410,7 +541,7 @@ export default function HealthWorkerPortal() {
                                 </label>
                                 <label className={styles.uploadButton}>
                                     <span>📁</span>
-                                    <span>Choose File</span>
+                                    <span>{t('Choose File')}</span>
                                     <input
                                         type="file"
                                         accept="image/*,.pdf"
@@ -420,7 +551,7 @@ export default function HealthWorkerPortal() {
                                 </label>
                             </div>
                             <p className={styles.uploadHint}>
-                                Supported: Images, PDF documents
+                                {t('Supported: Images, PDF documents')}
                             </p>
                         </>
                     ) : uploadProgress !== null && uploadProgress < 100 ? (
@@ -431,24 +562,24 @@ export default function HealthWorkerPortal() {
                                     style={{ width: `${uploadProgress}%` }}
                                 />
                             </div>
-                            <p>Uploading... {uploadProgress}%</p>
+                            <p>{t('Uploading...')} {uploadProgress}%</p>
                         </div>
                     ) : (
                         <div className={styles.uploadComplete}>
                             <span className={styles.checkmark}>✓</span>
-                            <p>Document uploaded successfully</p>
+                            <p>{t('Document uploaded successfully')}</p>
                             <button
                                 className={styles.secondaryButton}
                                 onClick={() => { setUploadProgress(null); setUploadSuccess(false); }}
                             >
-                                Upload Another
+                                {t('Upload Another')}
                             </button>
                         </div>
                     )}
                 </div>
 
                 <p className={styles.screenNote}>
-                    ℹ️ Documents are tagged to patient and require their consent before doctor can view.
+                    ℹ️ {t('Documents are tagged to patient and require their consent before doctor can view.')}
                 </p>
             </div>
         </div>
@@ -457,37 +588,44 @@ export default function HealthWorkerPortal() {
     const renderConsentScreen = () => (
         <div className={styles.actionScreen}>
             <button className={styles.backButton} onClick={() => setActiveScreen('dashboard')}>
-                ← Back to Dashboard
+                {t('← Back to Dashboard')}
             </button>
 
             <div className={styles.screenCard}>
                 <div className={styles.screenHeader}>
                     <span className={styles.screenIcon}>✓</span>
-                    <h2>Consent Explanation</h2>
+                    <h2>{t('Consent Explanation')}</h2>
                 </div>
 
                 <div className={styles.roleReminder}>
                     <span>⚕️</span>
-                    Your role: Explain consent clearly. The PATIENT must confirm, not you.
+                    {t('Your role: Explain consent clearly. The PATIENT must confirm, not you.')}
                 </div>
 
                 <div className={styles.consentText}>
-                    <h4>Read Aloud to Patient:</h4>
+                    <h4>{t('Read Aloud to Patient:')}</h4>
                     <div className={styles.consentBox}>
                         <p>
-                            "Your health information will be shared with the doctor to help them understand your condition
-                            and provide treatment. This includes symptoms you've described and any documents you've uploaded.
+                            {uiLanguage === 'en'
+                                ? `"${CONSENT_TEXT_KEYS.para1_en}`
+                                : t('consent_para_1')}
                         </p>
                         <p>
-                            You can withdraw your consent at any time. The doctor and health worker cannot access your
-                            information after the consultation ends without your permission.
+                            {uiLanguage === 'en'
+                                ? CONSENT_TEXT_KEYS.para2_en
+                                : t('consent_para_2')}
                         </p>
                         <p>
-                            Do you understand and agree to share your health information?"
+                            {uiLanguage === 'en'
+                                ? CONSENT_TEXT_KEYS.para3_en
+                                : t('consent_para_3')}
                         </p>
                     </div>
-                    <button className={styles.readAloudBtn}>
-                        🔊 Read Aloud
+                    <button
+                        className={styles.readAloudBtn}
+                        onClick={handleReadAloud}
+                    >
+                        {isReadingAloud ? t('⏹ Stop Reading') : t('🔊 Read Aloud')}
                     </button>
                 </div>
 
@@ -498,7 +636,7 @@ export default function HealthWorkerPortal() {
                             checked={consentExplained}
                             onChange={(e) => setConsentExplained(e.target.checked)}
                         />
-                        <span>I have explained consent to the patient</span>
+                        <span>{t('I have explained consent to the patient')}</span>
                     </label>
 
                     <label className={`${styles.consentCheck} ${styles.patientCheck}`}>
@@ -508,23 +646,54 @@ export default function HealthWorkerPortal() {
                             onChange={(e) => setPatientConfirmedConsent(e.target.checked)}
                             disabled={!consentExplained}
                         />
-                        <span>PATIENT has confirmed they understand and consent</span>
+                        <span>{t('PATIENT has confirmed they understand and consent')}</span>
                     </label>
+                </div>
+
+                {/* Voice Consent Recording */}
+                <div className={styles.voiceConsentArea}>
+                    <p className={styles.voiceConsentLabel}>
+                        {t('Optional: Patient can give verbal consent via recording')}
+                    </p>
+                    {!consentAudioUrl ? (
+                        <button
+                            className={`${styles.voiceConsentBtn} ${isRecordingConsent ? styles.recording : ''}`}
+                            onClick={isRecordingConsent ? stopConsentRecording : startConsentRecording}
+                        >
+                            {isRecordingConsent ? t('⏹ Stop Recording') : t('🎤 Record Patient Consent')}
+                        </button>
+                    ) : (
+                        <div className={styles.voiceConsentPlayback}>
+                            <p className={styles.voiceConsentStatus}>{t('Patient voice consent recorded')}</p>
+                            <audio controls src={consentAudioUrl} className={styles.audioPlayer} />
+                            <div className={styles.voiceConsentActions}>
+                                <button
+                                    className={styles.secondaryButton}
+                                    onClick={resetConsentRecording}
+                                >
+                                    {t('🔄 Re-record')}
+                                </button>
+                            </div>
+                            <p className={styles.voiceConsentAttached}>
+                                {t('✅ Voice consent attached to session')}
+                            </p>
+                        </div>
+                    )}
                 </div>
 
                 <button
                     className={styles.primaryButton}
                     disabled={!consentExplained || !patientConfirmedConsent}
                     onClick={() => {
-                        setSuccessMessage('Patient consent recorded. Proceeding to consultation...');
+                        setSuccessMessage(t('Patient consent recorded. Proceeding to consultation...'));
                         setTimeout(() => setActiveScreen('consult'), 1500);
                     }}
                 >
-                    Record Consent & Proceed to Consultation
+                    {t('Record Consent & Proceed to Consultation')}
                 </button>
 
                 <p className={styles.screenNote}>
-                    ℹ️ Patient can revoke consent at any time through their own app.
+                    ℹ️ {t('Patient can revoke consent at any time through their own app.')}
                 </p>
             </div>
         </div>
@@ -533,18 +702,18 @@ export default function HealthWorkerPortal() {
     const renderConsultScreen = () => (
         <div className={styles.actionScreen}>
             <button className={styles.backButton} onClick={() => setActiveScreen('dashboard')}>
-                ← Back to Dashboard
+                {t('← Back to Dashboard')}
             </button>
 
             <div className={styles.screenCard}>
                 <div className={styles.screenHeader}>
                     <span className={styles.screenIcon}>📞</span>
-                    <h2>Initiate Consultation</h2>
+                    <h2>{t('Initiate Consultation')}</h2>
                 </div>
 
                 <div className={styles.roleReminder}>
                     <span>⚕️</span>
-                    You initiate the call. Leave if patient requests privacy during consultation.
+                    {t('You initiate the call. Leave if patient requests privacy during consultation.')}
                 </div>
 
                 {!waitingForDoctor ? (
@@ -555,14 +724,14 @@ export default function HealthWorkerPortal() {
                                 onClick={() => setConsultationType('audio')}
                             >
                                 <span>📞</span>
-                                <span>Audio Call</span>
+                                <span>{t('Audio Call')}</span>
                             </button>
                             <button
                                 className={`${styles.consultOption} ${consultationType === 'video' ? styles.selected : ''}`}
                                 onClick={() => setConsultationType('video')}
                             >
                                 <span>📹</span>
-                                <span>Video Call</span>
+                                <span>{t('Video Call')}</span>
                             </button>
                         </div>
 
@@ -570,25 +739,25 @@ export default function HealthWorkerPortal() {
                             className={styles.primaryButton}
                             onClick={handleInitiateConsultation}
                         >
-                            Start Consultation
+                            {t('Start Consultation')}
                         </button>
                     </>
                 ) : (
                     <div className={styles.waitingState}>
                         <div className={styles.waitingSpinner}></div>
-                        <h3>Waiting for Doctor...</h3>
-                        <p>The patient is in queue. A doctor will join shortly.</p>
+                        <h3>{t('Waiting for Doctor...')}</h3>
+                        <p>{t('The patient is in queue. A doctor will join shortly.')}</p>
                         <button
                             className={styles.cancelButton}
                             onClick={() => setWaitingForDoctor(false)}
                         >
-                            Cancel
+                            {t('Cancel')}
                         </button>
                     </div>
                 )}
 
                 <p className={styles.screenNote}>
-                    ℹ️ Do not speak on behalf of doctor or interpret their advice.
+                    ℹ️ {t('Do not speak on behalf of doctor or interpret their advice.')}
                 </p>
             </div>
         </div>
@@ -598,7 +767,7 @@ export default function HealthWorkerPortal() {
         return (
             <div className={styles.loadingScreen}>
                 <div className={styles.spinner}></div>
-                <p>Loading Health Worker Portal...</p>
+                <p>{t('Loading Health Worker Portal...')}</p>
             </div>
         );
     }
@@ -610,11 +779,11 @@ export default function HealthWorkerPortal() {
                 <div className={styles.headerLeft}>
                     <div className={styles.logo}>
                         <Logo size="small" theme="primary" showText={false} />
-                        <span className={styles.logoText}>CareVista</span>
+                        <span className={styles.logoText}>{t('CareVista')}</span>
                     </div>
                     <div className={styles.headerDivider}></div>
-                    <h1 className={styles.portalTitle}>Health Worker Portal</h1>
-                    <span className={styles.facilitatorBadge}>Facilitator Only</span>
+                    <h1 className={styles.portalTitle}>{t('Health Worker Portal')}</h1>
+                    <span className={styles.facilitatorBadge}>{t('Facilitator Only')}</span>
                 </div>
                 <div className={styles.headerRight}>
                     {/* Multilingual Selector - Full Labels */}
@@ -642,17 +811,17 @@ export default function HealthWorkerPortal() {
                         </button>
                     </div>
                     {mounted && DEMO_MODE && (
-                        <span className={styles.demoBadge}>🧪 Demo Mode</span>
+                        <span className={styles.demoBadge}>🧪 {t('Demo Mode')}</span>
                     )}
                     {session ? (
                         <div className={styles.sessionIndicator}>
-                            <span className={styles.sessionActive}>Active Session</span>
-                            <span className={styles.sessionTimer}>⏱️ {session.remainingMinutes} min</span>
+                            <span className={styles.sessionActive}>{t('Active Session')}</span>
+                            <span className={styles.sessionTimer}>⏱️ {session.remainingMinutes} {t('min')}</span>
                         </div>
                     ) : (
-                        <span className={styles.sessionInactive}>No Active Session</span>
+                        <span className={styles.sessionInactive}>{t('No Active Session')}</span>
                     )}
-                    <button className={styles.signOutBtn} onClick={() => router.push('/auth/health-worker')}>Sign Out</button>
+                    <button className={styles.signOutBtn} onClick={() => router.push('/auth/health-worker')}>{t('Sign Out')}</button>
                 </div>
             </header>
 
@@ -660,17 +829,17 @@ export default function HealthWorkerPortal() {
             {session && (
                 <div className={styles.sessionBanner}>
                     <div className={styles.sessionInfo}>
-                        <span className={styles.sessionLabel}>Active Session:</span>
-                        <span className={styles.sessionPatient}>Patient ID: {session.patientId.slice(0, 12)}...</span>
-                        <span className={styles.sessionLang}>Language: {session.language.toUpperCase()}</span>
+                        <span className={styles.sessionLabel}>{t('Active Session:')}</span>
+                        <span className={styles.sessionPatient}>{t('Patient ID:')} {session.patientId.slice(0, 12)}...</span>
+                        <span className={styles.sessionLang}>{t('Preferred Language')}: {session.language.toUpperCase()}</span>
                     </div>
                     <div className={styles.sessionActions}>
-                        <span className={styles.timerLarge}>⏱️ {session.remainingMinutes} min remaining</span>
+                        <span className={styles.timerLarge}>⏱️ {session.remainingMinutes} {t('min remaining')}</span>
                         <button
                             className={styles.endSessionBtn}
                             onClick={() => setShowEndConfirm(true)}
                         >
-                            End Session
+                            {t('End Session')}
                         </button>
                     </div>
                 </div>
@@ -679,7 +848,7 @@ export default function HealthWorkerPortal() {
             {/* Role Disclaimer - Always Visible */}
             <div className={styles.roleDisclaimer}>
                 <span className={styles.disclaimerIcon}>⚠️</span>
-                <span><strong>This is an Assisted Session.</strong> The patient must be present. You are a facilitator only — no medical decisions, no patient data access outside session.</span>
+                <span><strong>{t('This is an Assisted Session.')}</strong> {t('The patient must be present. You are a facilitator only — no medical decisions, no patient data access outside session.')}</span>
             </div>
 
             {/* Messages */}
@@ -706,7 +875,7 @@ export default function HealthWorkerPortal() {
                         className={styles.startSessionBtn}
                         onClick={() => setShowStartModal(true)}
                     >
-                        Start Assisted Session
+                        {t('Start Assisted Session')}
                     </button>
                 </div>
             )}
@@ -715,7 +884,7 @@ export default function HealthWorkerPortal() {
             {showStartModal && (
                 <div className={styles.modalOverlay}>
                     <div className={styles.modal}>
-                        <h2 className={styles.modalTitle}>Start Assisted Session</h2>
+                        <h2 className={styles.modalTitle}>{t('Start Assisted Session')}</h2>
 
                         <div className={styles.confirmChecks}>
                             <label className={styles.confirmCheck}>
@@ -724,7 +893,7 @@ export default function HealthWorkerPortal() {
                                     checked={presenceConfirmed}
                                     onChange={(e) => setPresenceConfirmed(e.target.checked)}
                                 />
-                                <span>Patient is physically present with me now</span>
+                                <span>{t('Patient is physically present with me now')}</span>
                             </label>
                             <label className={styles.confirmCheck}>
                                 <input
@@ -732,34 +901,34 @@ export default function HealthWorkerPortal() {
                                     checked={roleUnderstood}
                                     onChange={(e) => setRoleUnderstood(e.target.checked)}
                                 />
-                                <span>I understand I am a facilitator only, not a medical provider</span>
+                                <span>{t('I understand I am a facilitator only, not a medical provider')}</span>
                             </label>
                         </div>
 
                         <div className={styles.formFields}>
                             <div className={styles.formField}>
-                                <label>Patient ID (if registered)</label>
+                                <label>{t('Patient ID (if registered)')}</label>
                                 <input
                                     type="text"
                                     value={patientId}
                                     onChange={(e) => setPatientId(e.target.value)}
-                                    placeholder="Enter patient ID or phone"
+                                    placeholder={t('Enter patient ID or phone')}
                                 />
                             </div>
                             <div className={styles.formDivider}>
-                                <span>or</span>
+                                <span>{t('or')}</span>
                             </div>
                             <div className={styles.formField}>
-                                <label>Patient Name (for new/temp patient)</label>
+                                <label>{t('Patient Name (for new/temp patient)')}</label>
                                 <input
                                     type="text"
                                     value={patientName}
                                     onChange={(e) => setPatientName(e.target.value)}
-                                    placeholder="Enter patient name"
+                                    placeholder={t('Enter patient name')}
                                 />
                             </div>
                             <div className={styles.formField}>
-                                <label>Preferred Language</label>
+                                <label>{t('Preferred Language')}</label>
                                 <select
                                     value={language}
                                     onChange={(e) => setLanguage(e.target.value)}
@@ -783,14 +952,14 @@ export default function HealthWorkerPortal() {
                                 className={styles.cancelBtn}
                                 onClick={() => { setShowStartModal(false); resetForm(); }}
                             >
-                                Cancel
+                                {t('Cancel')}
                             </button>
                             <button
                                 className={styles.startBtn}
                                 onClick={startSession}
                                 disabled={!presenceConfirmed || !roleUnderstood || (!patientId.trim() && !patientName.trim())}
                             >
-                                Start Session
+                                {t('Start Session')}
                             </button>
                         </div>
                     </div>
@@ -801,23 +970,22 @@ export default function HealthWorkerPortal() {
             {showEndConfirm && (
                 <div className={styles.modalOverlay}>
                     <div className={styles.modal}>
-                        <h2 className={styles.modalTitle}>End Session?</h2>
+                        <h2 className={styles.modalTitle}>{t('End Session?')}</h2>
                         <p className={styles.endWarning}>
-                            This will immediately revoke all access to patient actions.
-                            Any unsaved work will be lost.
+                            {t('This will immediately revoke all access to patient actions. Any unsaved work will be lost.')}
                         </p>
                         <div className={styles.modalActions}>
                             <button
                                 className={styles.cancelBtn}
                                 onClick={() => setShowEndConfirm(false)}
                             >
-                                Continue Session
+                                {t('Continue Session')}
                             </button>
                             <button
                                 className={styles.endBtn}
                                 onClick={endSession}
                             >
-                                End Session
+                                {t('End Session')}
                             </button>
                         </div>
                     </div>
@@ -826,7 +994,7 @@ export default function HealthWorkerPortal() {
 
             {/* Footer */}
             <footer className={styles.footer}>
-                <p>Health Worker Portal • Facilitator Access Only • All actions are logged</p>
+                <p>{t('Health Worker Portal • Facilitator Access Only • All actions are logged')}</p>
             </footer>
         </div>
     );
